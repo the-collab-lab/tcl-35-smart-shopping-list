@@ -7,4 +7,5 @@ Add yourself as a contributor to this project as a Markdown link that links your
 - [Dana Chen](https://github.com/danachen) 🐕
 ## Mentors
 - [Golfo Vasiliou](https://github.com/faysvas) 🥞
+- [David Lluna](https://github.com/llunaplanet) 🌕
 ## Code of Conduct Contacts
