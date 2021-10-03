@@ -5,6 +5,7 @@ Add yourself as a contributor to this project as a Markdown link that links your
 ## Cohort Participants
 
 - [Ayu Adiati](https://github.com/adiati98) 🤩
+- [Fatima Olasunkanmi-Ojo](https://github.com/fatima-ola/) 🤗
 - [Dana Chen](https://github.com/danachen) 🐕
 
 ## Mentors
