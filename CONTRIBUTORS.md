@@ -6,6 +6,7 @@ Add yourself as a contributor to this project as a Markdown link that links your
 
 - [Ayu Adiati](https://github.com/adiati98) 🤩
 - [Dana Chen](https://github.com/danachen) 🐕
+- [Edema Ukabi](https://github.com/edemaukabi) 👍
 
 ## Mentors
 
