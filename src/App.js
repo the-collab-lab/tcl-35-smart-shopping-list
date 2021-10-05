@@ -25,7 +25,7 @@ function App() {
             <ListItems />
           </Route>
         </Switch>
-        <div className="footer">
+        <footer>
           <nav className="links-wrapper">
             <ul className="links">
               <li className={`link list-link ${activeList ? 'active' : ''}`}>
@@ -46,7 +46,7 @@ function App() {
               </li>
             </ul>
           </nav>
-        </div>
+        </footer>
       </div>
     </Router>
   );
