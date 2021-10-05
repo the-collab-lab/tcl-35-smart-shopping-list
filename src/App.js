@@ -25,26 +25,28 @@ function App() {
             <ListItems />
           </Route>
         </Switch>
-        <nav className="links-wrapper">
-          <ul className="links">
-            <li className={`link list-link ${activeList ? 'active' : ''}`}>
-              <Link
-                to="/list"
-                onClick={() => (setActiveAdd(false), setActiveList(true))}
-              >
-                List
-              </Link>
-            </li>
-            <li className={`link add-link ${activeAdd ? 'active' : ''}`}>
-              <Link
-                to="/add"
-                onClick={() => (setActiveList(false), setActiveAdd(true))}
-              >
-                Add Item
-              </Link>
-            </li>
-          </ul>
-        </nav>
+        <div className="footer">
+          <nav className="links-wrapper">
+            <ul className="links">
+              <li className={`link list-link ${activeList ? 'active' : ''}`}>
+                <Link
+                  to="/list"
+                  onClick={() => (setActiveAdd(false), setActiveList(true))}
+                >
+                  List
+                </Link>
+              </li>
+              <li className={`link add-link ${activeAdd ? 'active' : ''}`}>
+                <Link
+                  to="/add"
+                  onClick={() => (setActiveList(false), setActiveAdd(true))}
+                >
+                  Add Item
+                </Link>
+              </li>
+            </ul>
+          </nav>
+        </div>
       </div>
     </Router>
   );
