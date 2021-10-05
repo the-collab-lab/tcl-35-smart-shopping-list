@@ -2,10 +2,9 @@ import React from 'react';
 
 const Home = () => {
   return (
-    <div>
-      <h1>Smart Shopping List</h1>
-      <p>Your shopping list is currently empty</p>
-    </div>
+    <header className="home-header">
+      <h1>Welcome to your Smart Shopping list!</h1>
+    </header>
   );
 };
 

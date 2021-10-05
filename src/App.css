@@ -1,8 +1,27 @@
 body {
-  display: flex;
+  background-color: rgb(189, 180, 180);
 }
-
-ul {
+.app {
+  text-align: center;
+  max-width: 600px;
+  margin: 0px auto;
+  padding: 20px;
+}
+.links {
   display: flex;
   list-style-type: none;
+  text-align: center;
+  justify-content: center;
+}
+
+.link > a {
+  text-decoration: none;
+}
+
+.list-link {
+  padding-right: 10px;
+}
+
+.active {
+  font-weight: bold;
 }
