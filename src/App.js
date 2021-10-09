@@ -1,5 +1,10 @@
 import React, { useState } from 'react';
-import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom';
+import {
+  BrowserRouter as Router,
+  Route,
+  NavLink,
+  Switch,
+} from 'react-router-dom';
 
 import ListItems from './Components/ListItems';
 import Home from './Components/Home';
@@ -29,20 +34,14 @@ function App() {
           <nav className="links-wrapper">
             <ul className="links">
               <li className={`link list-link ${activeList ? 'active' : ''}`}>
-                <Link
-                  to="/list"
-                  onClick={() => (setActiveAdd(false), setActiveList(true))}
-                >
+                <NavLink to="/list" activeClassName="active">
                   List
-                </Link>
+                </NavLink>
               </li>
               <li className={`link add-link ${activeAdd ? 'active' : ''}`}>
-                <Link
-                  to="/add"
-                  onClick={() => (setActiveList(false), setActiveAdd(true))}
-                >
+                <NavLink to="/add" activeClassName="active">
                   Add Item
-                </Link>
+                </NavLink>
               </li>
             </ul>
           </nav>
