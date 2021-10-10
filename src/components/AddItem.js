@@ -12,8 +12,8 @@ const AddItem = () => {
       setLoading(true);
 
       await addDoc(collection(db, 'shopping-list'), {
-        itemName: 'sugar',
-        buyingTime: 'today',
+        itemName: 'milo',
+        buyingTime: 'now',
       });
 
       setLoading(false);
