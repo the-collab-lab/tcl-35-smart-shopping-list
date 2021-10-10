@@ -17,4 +17,4 @@ Add yourself as a contributor to this project as a Markdown link that links your
 
 ## Code of Conduct Contacts
 
-- [Alex Morton](https://github.com/alexlsalt) ✨
+- [Alex Morton](https://github.com/alexlsalt)✨
