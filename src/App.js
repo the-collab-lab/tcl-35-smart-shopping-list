@@ -33,12 +33,12 @@ function App() {
         <footer>
           <nav className="links-wrapper">
             <ul className="links">
-              <li className={`link list-link ${activeList ? 'active' : ''}`}>
+              <li>
                 <NavLink to="/list" activeClassName="active">
                   List
                 </NavLink>
               </li>
-              <li className={`link add-link ${activeAdd ? 'active' : ''}`}>
+              <li>
                 <NavLink to="/add" activeClassName="active">
                   Add Item
                 </NavLink>

@@ -30,6 +30,7 @@ li.list-link {
 
 .active {
   font-weight: bold;
+  text-decoration: none;
 }
 
 footer {
