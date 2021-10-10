@@ -4,10 +4,10 @@
 
 ### Locations for things
 
-- Site: https://tcl-35-smart-shopping-list.web.app/
-- Repo: https://github.com/the-collab-lab/tcl-35-smart-shopping-list
-- Clone URL: `https://github.com/the-collab-lab/tcl-35-smart-shopping-list.git`
-- Issue list: https://github.com/the-collab-lab/tcl-35-smart-shopping-list/projects/1
+- Site: {PRODUCTION_URL}
+- Repo: {REPO_URL}
+- Clone URL: {REPO_CLONE_URL}
+- Issue list: {PROJECT_BOARD_URL}
 - Database: https://console.firebase.google.com/u/2/project/tcl-35-smart-shopping-list/firestore/data/~2F
 
 ### Project cadence & duration
@@ -18,42 +18,42 @@ Each week, the team of 4 developers will split into 2 pairs of 2 developers each
 
 Pairings will go as follows:
 
-#### Week 1, October 3 - 9
+#### Week 1, {DATES_WEEK_1}
 
-1. Fatima & Ayu
-2. Edema & Dana
+1. {DEV_1} & {DEV_2}
+2. {DEV_3} & {DEV_4}
 
-#### Week 2, October 10 - 16
+#### Week 2, {DATES_WEEK_2}
 
-1. Dana & Fatima
-2. Ayu & Edema
+1. {DEV_2} & {DEV_3}
+2. {DEV_1} & {DEV_4}
 
-#### Week 3, October 17 - 23
+#### Week 3, {DATES_WEEK_3}
 
-1. Edema & Fatima
-2. Ayu & Dana
+1. {DEV_3} & {DEV_1}
+2. {DEV_4} & {DEV_2}
 
-#### Week 4, October 24 - 30
+#### Week 4, {DATES_WEEK_4}
 
-1. Fatima & Ayu
-2. Edema & Dana
+1. {DEV_1} & {DEV_2}
+2. {DEV_3} & {DEV_4}
 
-#### Week 5, October 31 - November 6
+#### Week 5, {DATES_WEEK_5}
 
-1. Dana & Fatima
-2. Ayu & Edema
+1. {DEV_2} & {DEV_3}
+2. {DEV_1} & {DEV_4}
 
-#### Week 6, November 7 - 13
+#### Week 6, {DATES_WEEK_6}
 
-1. Edema & Fatima
-2. Ayu & Dana
+1. {DEV_3} & {DEV_1}
+2. {DEV_4} & {DEV_2}
 
-#### Week 7, November 14 - 20
+#### Week 7, {DATES_WEEK_7}
 
-1. Fatima & Ayu
-2. Edema & Dana
+1. {DEV_1} & {DEV_2}
+2. {DEV_3} & {DEV_4}
 
-#### Week 8, November 21 - 27
+#### Week 8, {DATES_WEEK_8}
 
-1. Dana & Fatima
-2. Ayu & Edema
+1. {DEV_2} & {DEV_3}
+2. {DEV_1} & {DEV_4}
