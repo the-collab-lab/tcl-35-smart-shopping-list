@@ -4,23 +4,11 @@ import { db } from '../lib/firebase';
 import { collection, addDoc } from '@firebase/firestore';
 
 const AddItem = () => {
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(false);
-
-  const handleClick = async (e) => {
-    try {
-      setLoading(true);
-
-      await addDoc(collection(db, 'shopping-list'), {
-        itemName: 'salt',
-        buyingTime: 'tomorrow',
-      });
-
-      setLoading(false);
-    } catch (error) {
-      setError(true);
-      console.log('Error adding shopping-list:', error);
-    }
+  const handleClick = (e) => {
+    addDoc(collection(db, 'shopping-list'), {
+      itemName: 'watermelon',
+      buyingTime: 'today',
+    });
   };
 
   return (
