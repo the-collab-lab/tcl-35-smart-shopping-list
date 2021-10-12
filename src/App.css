@@ -41,15 +41,14 @@ footer {
 }
 
 /* Stylings for the Home page */
+.create {
+  padding: 10px;
+}
 
 a {
   margin: 10px;
 }
 
 .join {
-  padding: 10px;
-}
-
-.create {
   padding: 10px;
 }
