@@ -39,3 +39,17 @@ footer {
   bottom: 0;
   margin-bottom: 10px;
 }
+
+/* Stylings for the Home page */
+
+a {
+  margin: 10px;
+}
+
+.join {
+  padding: 10px;
+}
+
+.create {
+  padding: 10px;
+}
