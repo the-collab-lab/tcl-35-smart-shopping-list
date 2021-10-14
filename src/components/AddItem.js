@@ -22,19 +22,27 @@ const AddItem = () => {
   const [shoppingItems, setShoppingItems] = useState([]);
   const [docObj, setDocObj] = useState(null);
 
+  // store generated token
   let tokenList = [];
+
+  // targeting shopping-list collection
   const itemsCollectionRef = collection(db, 'shopping-list');
 
+  // add item to DB
   const addItems = async () => {
     const refData = await getDocs(itemsCollectionRef);
 
     tokenList = refData.docs.map((doc) => doc.data().currToken);
     setAvailableTokens(tokenList);
 
+    // read data in shopping-list collection
+    // return all currToken that associated with their userToken
     const q = query(
       collection(db, 'shopping-list'),
       where('currToken', '==', 'userToken'),
     );
+
+    // get result of query
     const querySnapshot = await getDocs(q);
     console.log(querySnapshot);
     setDocObj(querySnapshot);
@@ -67,6 +75,7 @@ const AddItem = () => {
     }
   };
 
+  // change value of purchaseTime to integer
   const calculateNextPurchase = (purchaseTime) => {
     if (purchaseTime === 'Not soon') {
       return 30;
@@ -77,9 +86,11 @@ const AddItem = () => {
     }
   };
 
+  // handle value change in radio button
   const handleValueChange = (e) =>
     setNextPurchase(calculateNextPurchase(e.target.value));
 
+  // handle click button
   const handleClick = (e) => {
     e.preventDefault();
     addItems();
