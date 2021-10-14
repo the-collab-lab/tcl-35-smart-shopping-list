@@ -1,42 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import { db } from '../lib/firebase.js';
-import { collection, query, onSnapshot } from 'firebase/firestore';
+import { collection, getDocs } from 'firebase/firestore';
 
 const ListItem = () => {
   const [items, setItems] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(false);
+  const itemsCollectionRef = collection(db, 'shopping-list');
 
   // get items
   useEffect(() => {
-    setLoading(true);
-    const getItems = () => {
-      try {
-        const itemsCollectionRef = collection(db, 'shopping-list');
-        const queryShoppingList = query(itemsCollectionRef);
-
-        onSnapshot(queryShoppingList, (querySnapshot) => {
-          const items = querySnapshot.docs.reduce((acc, doc) => {
-            const { itemName, buyingTime } = doc.data();
-            const id = doc.id;
-            return [...acc, { id, itemName, buyingTime }];
-          }, []);
-
-          setItems(items);
-          setLoading(false);
-        });
-      } catch (e) {
-        setError(true);
-      }
+    const getItems = async () => {
+      const data = await getDocs(itemsCollectionRef);
+      setItems(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
     };
-
     getItems();
   }, []);
 
   return (
     <div>
-      {error && <p>An error occured while getting your items</p>}
-      {loading && <p>Loading...</p>}
       {items.map((item) => {
         return (
           <div>
