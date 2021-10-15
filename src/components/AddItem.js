@@ -4,57 +4,35 @@ import { db } from '../lib/firebase';
 import {
   collection,
   doc,
-  setDoc,
-  addDoc,
-  getDoc,
   getDocs,
-  query,
-  where,
+  updateDoc,
+  arrayUnion,
+  setDoc,
 } from '@firebase/firestore';
 
 const AddItem = () => {
-  const userToken = localStorage.getItem('currToken');
   const [itemName, setItemName] = useState('');
   const [nextPurchase, setNextPurchase] = useState(0);
   const [lastPurchase, setLastPurchase] = useState(null);
-  const [tokenExists, setTokenExists] = useState(false);
-  const [availableTokens, setAvailableTokens] = useState([]);
-  const [shoppingItems, setShoppingItems] = useState([]);
-  const [docObj, setDocObj] = useState(null);
 
-  let tokenList = [];
+  const currToken = localStorage.getItem('currToken');
   const itemsCollectionRef = collection(db, 'shopping-list');
 
   const addItems = async () => {
     const refData = await getDocs(itemsCollectionRef);
+    let tokenList = refData.docs.map(({ id }) => id);
 
-    tokenList = refData.docs.map((doc) => doc.data().currToken);
-    setAvailableTokens(tokenList);
-
-    const q = query(
-      collection(db, 'shopping-list'),
-      where('currToken', '==', 'userToken'),
-    );
-    const querySnapshot = await getDocs(q);
-    console.log(querySnapshot);
-    setDocObj(querySnapshot);
-
-    if (availableTokens.includes('userToken')) {
-      console.log(availableTokens[0]);
-      setTokenExists(true);
-      setShoppingItems(...querySnapshot.docs.data().items);
-      setShoppingItems(...shoppingItems, {
+    if (tokenList.includes(currToken)) {
+      const newList = {
         itemName,
         nextPurchase,
         lastPurchase,
-      });
-      querySnapshot.update({
-        items: db.FieldValue.arrayUnion(...shoppingItems),
+      };
+      await updateDoc(doc(db, 'shopping-list', currToken), {
+        items: arrayUnion(newList),
       });
     } else {
-      console.log('No such document!');
-      setTokenExists(false);
-      addDoc(collection(db, 'shopping-list'), {
+      await setDoc(doc(db, 'shopping-list', currToken), {
         items: [
           {
             itemName,
@@ -62,7 +40,6 @@ const AddItem = () => {
             lastPurchase,
           },
         ],
-        currToken: 'userToken',
       });
     }
   };
