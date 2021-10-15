@@ -54,13 +54,20 @@ const AddItem = () => {
     }
   };
 
+  const clearFormElements = () => {
+    setItemName('');
+    document.getElementById('soon').checked = false;
+    document.getElementById('kindOfSoon').checked = false;
+    document.getElementById('notSoon').checked = false;
+  };
+
   const handleValueChange = (e) =>
     setNextPurchase(calculateNextPurchase(e.target.value));
 
   const handleClick = (e) => {
     e.preventDefault();
     addItems();
-    setItemName('');
+    clearFormElements();
   };
 
   return (
