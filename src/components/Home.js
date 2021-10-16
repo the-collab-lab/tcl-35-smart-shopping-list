@@ -7,14 +7,14 @@ const Home = () => {
   const [token, setToken] = useState(getToken);
   const history = useHistory();
 
+  let localToken = localStorage.getItem('currToken');
+
+  if (localToken) {
+    history.push('/list');
+  }
+
   const handleClick = function () {
-    let localToken = localStorage.getItem('currToken');
-    if (localToken) {
-      console.log('local token already exists');
-      history.push('/list');
-    } else {
-      setToken(token);
-    }
+    setToken(token);
   };
 
   useEffect(() => {
