@@ -71,23 +71,24 @@ const AddItem = () => {
   };
 
   return (
-    <div>
-      <form>
-        <label htmlFor="itemName">What do you want to buy: </label>
-        <input
-          type="text"
-          placeholder="Bread"
-          id="itemName"
-          value={itemName}
-          onChange={(e) => {
-            setItemName(e.target.value);
-          }}
-          required
-        />
+    <div id="main-container" className="add-items">
+      <form id="sub-wrapper">
+        <div className="form-item">
+          <label htmlFor="itemName">What do you want to buy: </label>
+          <input
+            type="text"
+            placeholder="Bread"
+            id="itemName"
+            value={itemName}
+            onChange={(e) => {
+              setItemName(e.target.value);
+            }}
+            required
+          />
+        </div>
 
-        <fieldset>
-          <legend>How soon do you want to buy your item?</legend>
-
+        <div className="form-item">
+          <p>How soon do you want to buy your item?</p>
           <input
             type="radio"
             name="timeToBuy"
@@ -96,7 +97,6 @@ const AddItem = () => {
             onChange={handleValueChange}
           />
           <label htmlFor="soon">Soon</label>
-
           <input
             type="radio"
             name="timeToBuy"
@@ -105,7 +105,6 @@ const AddItem = () => {
             onChange={handleValueChange}
           />
           <label htmlFor="kindOfSoon">Kind of Soon</label>
-
           <input
             type="radio"
             name="timeToBuy"
@@ -114,9 +113,11 @@ const AddItem = () => {
             onChange={handleValueChange}
           />
           <label htmlFor="notSoon">Not Soon</label>
-        </fieldset>
+        </div>
 
-        <button onClick={handleClick}>Add Item</button>
+        <button id="submit" className="form-item" onClick={handleClick}>
+          Add Item
+        </button>
       </form>
     </div>
   );

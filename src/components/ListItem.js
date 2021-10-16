@@ -19,15 +19,17 @@ const ListItem = () => {
   }, []);
 
   return (
-    <div>
-      <h2>Names of Items in your shopping List</h2>
-      {items.map((item) => {
-        return (
-          <div>
-            <p>{item.itemName}</p>
-          </div>
-        );
-      })}
+    <div id="main-container" className="flex-wrapper">
+      <div id="sub-wrapper">
+        <h2>Names of Items in your shopping List</h2>
+        {items.map((item) => {
+          return (
+            <div className="item-wrapper">
+              <p>{item.itemName}</p>
+            </div>
+          );
+        })}
+      </div>
     </div>
   );
 };
