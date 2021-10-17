@@ -90,6 +90,7 @@ const AddItem = () => {
         <div className="form-item">
           <p>How soon do you want to buy your item?</p>
           <input
+            checked
             type="radio"
             name="timeToBuy"
             id="soon"
