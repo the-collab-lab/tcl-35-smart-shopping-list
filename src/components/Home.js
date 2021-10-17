@@ -4,22 +4,24 @@ import { useHistory } from 'react-router-dom';
 import { getToken, words } from '@the-collab-lab/shopping-list-utils';
 
 const Home = () => {
-  const [token, setToken] = useState(getToken);
+  // const existingToken = localStorage.getItem('currentToken');
+  const [token, setToken] = useState(() => {
+    const existingToken = localStorage.getItem('currToken');
+    return existingToken ? existingToken : '';
+  });
+
   const history = useHistory();
 
-  let localToken = localStorage.getItem('currToken');
-
-  if (localToken) {
+  if (token) {
     history.push('/list');
   }
 
   const handleClick = function () {
-    setToken(token);
+    if (!token) {
+      localStorage.setItem('currToken', getToken());
+    }
+    history.push('/list');
   };
-
-  useEffect(() => {
-    localStorage.setItem('currToken', JSON.stringify(token));
-  }, [token]);
 
   return (
     <header className="home-header">

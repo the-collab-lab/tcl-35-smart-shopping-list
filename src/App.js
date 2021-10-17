@@ -7,11 +7,13 @@ import './App.css';
 import {
   BrowserRouter as Router,
   Route,
-  NavLink,
   Switch,
+  Redirect,
 } from 'react-router-dom';
 
 function App() {
+  const existingToken = localStorage.getItem('currToken');
+
   return (
     <Router>
       <div className="app">
@@ -26,22 +28,7 @@ function App() {
             <ListItem />
           </Route>
         </Switch>
-        <footer>
-          <nav className="links-wrapper">
-            <ul className="links">
-              <li>
-                <NavLink to="/list" activeClassName="active">
-                  List
-                </NavLink>
-              </li>
-              <li>
-                <NavLink to="/add" activeClassName="active">
-                  Add Item
-                </NavLink>
-              </li>
-            </ul>
-          </nav>
-        </footer>
+        {existingToken ? <Redirect to="/list" /> : <Redirect to="/" />}
       </div>
     </Router>
   );
