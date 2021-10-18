@@ -1,50 +1,64 @@
 import React, { useState, useEffect } from 'react';
 import { db } from '../lib/firebase.js';
-import { collection, query, onSnapshot } from 'firebase/firestore';
+import { NavLink } from 'react-router-dom';
+import { collection, doc, onSnapshot } from 'firebase/firestore';
 
 const ListItem = () => {
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
+  const [emptyList, setEmptyList] = useState(false);
+
+  const currToken = localStorage.getItem('currToken');
+  const itemsCollectionRef = collection(db, 'shopping-list');
 
   // get items
   useEffect(() => {
-    setLoading(true);
-    const getItems = () => {
-      try {
-        const itemsCollectionRef = collection(db, 'shopping-list');
-        const queryShoppingList = query(itemsCollectionRef);
-
-        onSnapshot(queryShoppingList, (querySnapshot) => {
-          const items = querySnapshot.docs.reduce((acc, doc) => {
-            const { itemName, buyingTime } = doc.data();
-            const id = doc.id;
-            return [...acc, { id, itemName, buyingTime }];
-          }, []);
-
-          setItems(items);
-          setLoading(false);
+    const getItems = async () => {
+      currToken &&
+        onSnapshot(doc(itemsCollectionRef, currToken), (doc) => {
+          if (!doc.data()) {
+            setEmptyList(true);
+          } else {
+            setItems(doc.data().items);
+          }
         });
-      } catch (e) {
-        setError(true);
-      }
     };
-
     getItems();
   }, []);
 
   return (
-    <div>
-      {error && <p>An error occured while getting your items</p>}
-      {loading && <p>Loading...</p>}
-      {items.map((item) => {
-        return (
-          <div>
-            <p>Name of Item: {item.itemName}</p>
-            <p>Buying Time: {item.buyingTime}</p>
-          </div>
-        );
-      })}
+    <div id="main-container" className="flex-wrapper">
+      <div id="sub-wrapper">
+        <h2>Names of Items in your shopping List</h2>
+        {loading && <p>Loading ... </p>}
+        {error && <p>An error occured</p>}
+        {emptyList && <p>You dont have any list yet</p>}
+
+        {items.map((item) => {
+          return (
+            <div className="item-wrapper">
+              <p>{item.itemName}</p>
+            </div>
+          );
+        })}
+      </div>
+      <footer>
+        <nav className="links-wrapper">
+          <ul className="links">
+            <li>
+              <NavLink to="/list" activeClassName="active">
+                List
+              </NavLink>
+            </li>
+            <li>
+              <NavLink to="/add" activeClassName="active">
+                Add Item
+              </NavLink>
+            </li>
+          </ul>
+        </nav>
+      </footer>
     </div>
   );
 };
