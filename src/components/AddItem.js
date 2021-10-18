@@ -19,6 +19,8 @@ const AddItem = () => {
   const currToken = localStorage.getItem('currToken');
   const itemsCollectionRef = collection(db, 'shopping-list');
 
+  const validateInput = (list) => {};
+
   const addItems = async () => {
     const refData = await getDocs(itemsCollectionRef);
     let tokenList = refData.docs.map(({ id }) => id);
@@ -29,9 +31,14 @@ const AddItem = () => {
         nextPurchase,
         lastPurchase,
       };
-      await updateDoc(doc(db, 'shopping-list', currToken), {
-        items: arrayUnion(newList),
-      });
+
+      if (validateInput(newList)) {
+        await updateDoc(doc(db, 'shopping-list', currToken), {
+          items: arrayUnion(newList),
+        });
+      } else {
+        alert('item already exists in the list');
+      }
     } else {
       await setDoc(doc(db, 'shopping-list', currToken), {
         items: [
