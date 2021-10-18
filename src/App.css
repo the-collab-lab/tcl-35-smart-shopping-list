@@ -123,3 +123,8 @@ a {
 .add-items {
   font-size: 1.2rem;
 }
+
+.error {
+  font-size: 1rem;
+  color: red;
+}
