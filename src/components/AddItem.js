@@ -19,7 +19,6 @@ const AddItem = () => {
   const [lastPurchase, setLastPurchase] = useState(null);
   const [emptyList, setEmptyList] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
-  const [showErrorMessage, setShowErrorMessage] = useState(true);
 
   const currToken = localStorage.getItem('currToken');
   const itemsCollectionRef = collection(db, 'shopping-list');
