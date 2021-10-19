@@ -123,3 +123,9 @@ a {
 .add-items {
   font-size: 1.2rem;
 }
+
+.error-message {
+  color: red;
+  font-style: italic;
+  font-size: 0.8rem;
+}
