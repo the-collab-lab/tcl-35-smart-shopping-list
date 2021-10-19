@@ -4,7 +4,6 @@ import { useHistory } from 'react-router-dom';
 import { getToken, words } from '@the-collab-lab/shopping-list-utils';
 
 const Home = () => {
-  // const existingToken = localStorage.getItem('currentToken');
   const [joinlist, setJoinList] = useState('');
   const [token, setToken] = useState(() => {
     const existingToken = localStorage.getItem('currToken');
