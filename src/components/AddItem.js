@@ -15,7 +15,7 @@ import {
 const AddItem = () => {
   const [items, setItems] = useState([]);
   const [itemName, setItemName] = useState('');
-  const [nextPurchase, setNextPurchase] = useState(0);
+  const [nextPurchase, setNextPurchase] = useState(7);
   const [lastPurchase, setLastPurchase] = useState(null);
   const [emptyList, setEmptyList] = useState(false);
   const [errorMessage, setErrorMessage] = useState(true);
@@ -55,11 +55,10 @@ const AddItem = () => {
   const addItems = async () => {
     const refData = await getDocs(itemsCollectionRef);
     let tokenList = refData.docs.map(({ id }) => id);
-    console.log(nextPurchase);
-    if (nextPurchase === 0) {
-      setNextPurchase(7);
-    }
-    console.log(nextPurchase);
+    // console.log(nextPurchase);
+    // if (nextPurchase === 0) {
+    //   setNextPurchase(7);
+    // }
 
     if (tokenList.includes(currToken)) {
       const newList = {
