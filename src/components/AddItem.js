@@ -18,7 +18,8 @@ const AddItem = () => {
   const [nextPurchase, setNextPurchase] = useState(0);
   const [lastPurchase, setLastPurchase] = useState(null);
   const [emptyList, setEmptyList] = useState(false);
-  const [errorMessage, setErrorMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState(true);
+  const [hasError, setHasError] = useState(false);
 
   const currToken = localStorage.getItem('currToken');
   const itemsCollectionRef = collection(db, 'shopping-list');
@@ -54,6 +55,11 @@ const AddItem = () => {
   const addItems = async () => {
     const refData = await getDocs(itemsCollectionRef);
     let tokenList = refData.docs.map(({ id }) => id);
+    console.log(nextPurchase);
+    if (nextPurchase === 0) {
+      setNextPurchase(7);
+    }
+    console.log(nextPurchase);
 
     if (tokenList.includes(currToken)) {
       const newList = {
@@ -67,7 +73,8 @@ const AddItem = () => {
           items: arrayUnion(newList),
         });
       } else {
-        setErrorMessage('Item already exists in the list');
+        setHasError(true);
+        setTimeout(() => setHasError(false), 3000);
       }
     } else {
       await setDoc(doc(db, 'shopping-list', currToken), {
@@ -99,8 +106,9 @@ const AddItem = () => {
     document.getElementById('notSoon').checked = false;
   };
 
-  const handleValueChange = (e) =>
+  const handleValueChange = (e) => {
     setNextPurchase(calculateNextPurchase(e.target.value));
+  };
 
   const handleClick = (e) => {
     e.preventDefault();
@@ -112,7 +120,7 @@ const AddItem = () => {
     <div id="main-container" className="add-items">
       <form id="sub-wrapper">
         <div className="form-item">
-          {errorMessage && <p className="error"> {errorMessage} </p>}
+          {hasError && <p className="error"> Item already exists in list. </p>}
 
           <label htmlFor="itemName">What do you want to buy: </label>
           <input
@@ -135,6 +143,7 @@ const AddItem = () => {
             id="soon"
             value="soon"
             onChange={handleValueChange}
+            defaultChecked
           />
           <label htmlFor="soon">Soon</label>
           <input
