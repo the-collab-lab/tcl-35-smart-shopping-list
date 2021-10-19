@@ -2,19 +2,38 @@ import React from 'react';
 import { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { getToken, words } from '@the-collab-lab/shopping-list-utils';
+import { db } from '../lib/firebase.js';
+import { collection, getDocs } from '@firebase/firestore';
+import Error from './Error';
 
 const Home = () => {
   const [joinlist, setJoinList] = useState('');
+  const [noSharedToken, setNoSharedToken] = useState(false);
+  const [showErrorMessage, setShowErrorMessage] = useState(true);
   const [token, setToken] = useState(() => {
     const existingToken = localStorage.getItem('currToken');
     return existingToken ? existingToken : '';
   });
 
   const history = useHistory();
+  const itemsCollectionRef = collection(db, 'shopping-list');
 
   if (token) {
     history.push('/list');
   }
+
+  const fetchTokens = async () => {
+    const refData = await getDocs(itemsCollectionRef);
+    let tokenList = refData.docs.map(({ id }) => id);
+
+    if (!tokenList.includes(joinlist)) {
+      setNoSharedToken(true);
+      setShowErrorMessage(true);
+      setTimeout(() => setShowErrorMessage(false), 3000);
+    } else {
+      history.push('/list');
+    }
+  };
 
   const handleClick = function () {
     if (!token) {
@@ -32,11 +51,10 @@ const Home = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log('clicked');
     if (joinlist) {
       localStorage.setItem('currToken', joinlist);
-      console.log(joinlist);
     }
+    fetchTokens();
   };
 
   return (
@@ -62,6 +80,9 @@ const Home = () => {
               onChange={handleChange}
             />
           </div>
+          {noSharedToken && showErrorMessage && (
+            <Error errorMessage="Token does not exist, enter a valid token" />
+          )}
           <button>Join an existing list</button>
         </form>
       </section>
