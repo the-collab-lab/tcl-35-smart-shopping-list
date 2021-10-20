@@ -18,7 +18,6 @@ const AddItem = () => {
   const [nextPurchase, setNextPurchase] = useState(7);
   const [lastPurchase, setLastPurchase] = useState(null);
   const [emptyList, setEmptyList] = useState(false);
-  const [errorMessage, setErrorMessage] = useState(true);
   const [hasError, setHasError] = useState(false);
 
   const currToken = localStorage.getItem('currToken');
@@ -45,7 +44,10 @@ const AddItem = () => {
 
   const validateInput = (list) => {
     for (const item of items) {
-      if (cleanString(item.itemName) === cleanString(list.itemName)) {
+      if (
+        !list.itemName ||
+        cleanString(item.itemName) === cleanString(list.itemName)
+      ) {
         return false;
       }
     }
@@ -55,10 +57,6 @@ const AddItem = () => {
   const addItems = async () => {
     const refData = await getDocs(itemsCollectionRef);
     let tokenList = refData.docs.map(({ id }) => id);
-    // console.log(nextPurchase);
-    // if (nextPurchase === 0) {
-    //   setNextPurchase(7);
-    // }
 
     if (tokenList.includes(currToken)) {
       const newList = {
