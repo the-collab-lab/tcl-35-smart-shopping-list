@@ -18,7 +18,13 @@ const AddItem = () => {
   const [nextPurchase, setNextPurchase] = useState(7);
   const [lastPurchase, setLastPurchase] = useState(null);
   const [emptyList, setEmptyList] = useState(false);
-  const [hasError, setHasError] = useState(false);
+  const [hasError, setHasError] = useState('false');
+  const [errors, setErrors] = useState('');
+
+  const errorsList = {
+    empty: 'Make sure you add an item',
+    duplicate: 'Item already exists',
+  };
 
   const currToken = localStorage.getItem('currToken');
   const itemsCollectionRef = collection(db, 'shopping-list');
@@ -44,10 +50,11 @@ const AddItem = () => {
 
   const validateInput = (list) => {
     for (const item of items) {
-      if (
-        !list.itemName ||
-        cleanString(item.itemName) === cleanString(list.itemName)
-      ) {
+      if (!list.itemName) {
+        setErrors(errorsList['empty']);
+        return false;
+      } else if (cleanString(item.itemName) === cleanString(list.itemName)) {
+        setErrors(errorsList['duplicate']);
         return false;
       }
     }
@@ -71,6 +78,7 @@ const AddItem = () => {
         });
       } else {
         setHasError(true);
+        // setErrors(errorsList['duplicate']);
         setTimeout(() => setHasError(false), 3000);
       }
     } else {
@@ -115,9 +123,9 @@ const AddItem = () => {
 
   return (
     <div id="main-container" className="add-items">
-      <form id="sub-wrapper">
+      <form id="sub-wrapper" onSubmit={handleClick}>
         <div className="form-item">
-          {hasError && <p className="error"> Item already exists in list. </p>}
+          {hasError && <p className="error"> {errors} </p>}
 
           <label htmlFor="itemName">What do you want to buy: </label>
           <input
@@ -128,7 +136,6 @@ const AddItem = () => {
             onChange={(e) => {
               setItemName(e.target.value);
             }}
-            required
           />
         </div>
 
@@ -140,7 +147,7 @@ const AddItem = () => {
             id="soon"
             value="soon"
             onChange={handleValueChange}
-            defaultChecked
+            checked
           />
           <label htmlFor="soon">Soon</label>
           <input
@@ -161,7 +168,7 @@ const AddItem = () => {
           <label htmlFor="notSoon">Not Soon</label>
         </div>
 
-        <button id="submit" className="form-item" onClick={handleClick}>
+        <button id="submit" className="form-item">
           Add Item
         </button>
       </form>
