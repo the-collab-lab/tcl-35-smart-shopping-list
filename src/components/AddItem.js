@@ -10,6 +10,7 @@ import {
   arrayUnion,
   setDoc,
 } from '@firebase/firestore';
+import Footer from './Footer';
 
 const AddItem = () => {
   const [itemName, setItemName] = useState('');
@@ -72,7 +73,7 @@ const AddItem = () => {
   };
 
   return (
-    <div id="main-container" className="add-items">
+    <div id="main-container" className="flex-wrapper">
       <form id="sub-wrapper">
         <div className="form-item">
           <label htmlFor="itemName">What do you want to buy: </label>
@@ -120,23 +121,7 @@ const AddItem = () => {
           Add Item
         </button>
       </form>
-
-      <footer>
-        <nav className="links-wrapper">
-          <ul className="links">
-            <li>
-              <NavLink to="/list" activeClassName="active">
-                List
-              </NavLink>
-            </li>
-            <li>
-              <NavLink to="/add" activeClassName="active">
-                Add Item
-              </NavLink>
-            </li>
-          </ul>
-        </nav>
-      </footer>
+      <Footer />
     </div>
   );
 };
