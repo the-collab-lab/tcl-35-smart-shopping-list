@@ -17,7 +17,6 @@ const AddItem = () => {
   const [itemName, setItemName] = useState('');
   const [nextPurchase, setNextPurchase] = useState(7);
   const [lastPurchase, setLastPurchase] = useState(null);
-  const [emptyList, setEmptyList] = useState(false);
   const [hasError, setHasError] = useState('false');
   const [errors, setErrors] = useState('');
 
@@ -33,11 +32,7 @@ const AddItem = () => {
     const getItems = async () => {
       currToken &&
         onSnapshot(doc(itemsCollectionRef, currToken), (doc) => {
-          if (!doc.data()) {
-            setEmptyList(true);
-          } else {
-            setItems(doc.data().items);
-          }
+          if (doc.data()) setItems(doc.data().items);
         });
     };
     getItems();
@@ -78,7 +73,6 @@ const AddItem = () => {
         });
       } else {
         setHasError(true);
-        // setErrors(errorsList['duplicate']);
         setTimeout(() => setHasError(false), 3000);
       }
     } else {
