@@ -124,6 +124,11 @@ a {
   font-size: 1.2rem;
 }
 
+.error-message {
+  color: red;
+  font-style: italic;
+  font-size: 0.8rem;
+}
 .error {
   font-size: 1rem;
   color: red;

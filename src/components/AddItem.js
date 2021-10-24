@@ -11,6 +11,7 @@ import {
   setDoc,
   onSnapshot,
 } from '@firebase/firestore';
+import Footer from './Footer';
 
 const AddItem = () => {
   const [items, setItems] = useState([]);
@@ -166,23 +167,7 @@ const AddItem = () => {
           Add Item
         </button>
       </form>
-
-      <footer>
-        <nav className="links-wrapper">
-          <ul className="links">
-            <li>
-              <NavLink to="/list" activeClassName="active">
-                List
-              </NavLink>
-            </li>
-            <li>
-              <NavLink to="/add" activeClassName="active">
-                Add Item
-              </NavLink>
-            </li>
-          </ul>
-        </nav>
-      </footer>
+      <Footer />
     </div>
   );
 };

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { db } from '../lib/firebase.js';
 import { NavLink } from 'react-router-dom';
 import { collection, doc, onSnapshot } from 'firebase/firestore';
+import Footer from './Footer';
 
 const ListItem = () => {
   const [items, setItems] = useState([]);
@@ -43,22 +44,7 @@ const ListItem = () => {
           );
         })}
       </div>
-      <footer>
-        <nav className="links-wrapper">
-          <ul className="links">
-            <li>
-              <NavLink to="/list" activeClassName="active">
-                List
-              </NavLink>
-            </li>
-            <li>
-              <NavLink to="/add" activeClassName="active">
-                Add Item
-              </NavLink>
-            </li>
-          </ul>
-        </nav>
-      </footer>
+      <Footer />
     </div>
   );
 };
