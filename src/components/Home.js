@@ -43,10 +43,8 @@ const Home = () => {
   };
 
   const handleChange = (e) => {
-    const { name, value } = e.currentTarget;
-    if (name === 'joinlist') {
-      setJoinList(value);
-    }
+    const { value } = e.currentTarget;
+    setJoinList(value);
   };
 
   const handleSubmit = (e) => {
