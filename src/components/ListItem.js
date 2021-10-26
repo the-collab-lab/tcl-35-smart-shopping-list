@@ -19,10 +19,7 @@ const ListItem = () => {
 
   const currToken = localStorage.getItem('currToken');
   const itemsCollectionRef = collection(db, 'shopping-list');
-  // FIXME: problem with populating the initial default checkBoxes
-  const [checkBoxes, setCheckBoxes] = useState(
-    new Array(items.length).fill(false),
-  );
+  const [checkBoxes, setCheckBoxes] = useState([]);
 
   // get items
   useEffect(() => {
@@ -39,7 +36,14 @@ const ListItem = () => {
     getItems();
   }, []);
 
-  const readList = async (position) => {
+  useEffect(() => {
+    setCheckBoxes(new Array(items.length).fill(false));
+  }, [items]);
+
+  // TODO: this is fixed now
+  console.log(checkBoxes);
+
+  const readList = (position) => {
     let newList = [];
     onSnapshot(doc(itemsCollectionRef, currToken), (doc) => {
       for (const item of doc.data().items) {
@@ -63,8 +67,9 @@ const ListItem = () => {
   const handleOnChange = (position) => {
     for (let item of items) {
       if (item['itemName'] === items[position]['itemName']) {
-        readList(position);
+        // readList(position);
         updateList(position);
+        console.log(items);
       }
     }
 
