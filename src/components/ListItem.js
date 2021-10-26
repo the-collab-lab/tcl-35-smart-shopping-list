@@ -9,7 +9,6 @@ import {
   updateDoc,
 } from 'firebase/firestore';
 import Footer from './Footer';
-import { check } from 'prettier';
 
 const ListItem = () => {
   const [items, setItems] = useState([]);
@@ -21,7 +20,6 @@ const ListItem = () => {
   const itemsCollectionRef = collection(db, 'shopping-list');
   const [checkBoxes, setCheckBoxes] = useState([]);
 
-  // get items
   useEffect(() => {
     const getItems = async () => {
       currToken &&
@@ -43,7 +41,7 @@ const ListItem = () => {
   // TODO: this is fixed now
   console.log(checkBoxes);
 
-  const readList = (position) => {
+  const readList = (position, callback) => {
     let newList = [];
     onSnapshot(doc(itemsCollectionRef, currToken), (doc) => {
       for (const item of doc.data().items) {
@@ -55,25 +53,28 @@ const ListItem = () => {
         }
       }
     });
-    setItems(newList);
+    callback(newList);
   };
 
-  const updateList = (position) => {
+  const updateList = async (position) => {
     const ref = doc(db, 'shopping-list', currToken);
-    // FIXME: items is not getting the updated newList
-    setDoc(ref, { items: items });
+    readList(position, (listItems) => {
+      setItems(listItems);
+      // setDoc(ref, { items: [{itemName: 'melon', lastPurchase: null, nextPurchase: null}] });
+      console.log(listItems);
+      console.log(items);
+      // FIXME: items is not getting the updated newList
+      updateDoc(ref, { items: items });
+    });
   };
 
   const handleOnChange = (position) => {
     for (let item of items) {
       if (item['itemName'] === items[position]['itemName']) {
-        // readList(position);
         updateList(position);
-        console.log(items);
       }
     }
 
-    setCheckBoxes(new Array(items.length).fill(false));
     const updatedCheckBoxes = checkBoxes.map((item, index) =>
       index === position ? !item : item,
     );
@@ -97,8 +98,6 @@ const ListItem = () => {
                 <input
                   type="checkbox"
                   id={`custom-checkbox-${index}`}
-                  // name={name}
-                  // value={name}
                   checked={checkBoxes[index]}
                   onChange={() => handleOnChange(index)}
                 />
