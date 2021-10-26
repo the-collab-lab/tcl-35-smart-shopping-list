@@ -39,8 +39,8 @@ const ListItem = () => {
     getItems();
   }, []);
 
-  let newList = [];
   const readList = async (position) => {
+    let newList = [];
     onSnapshot(doc(itemsCollectionRef, currToken), (doc) => {
       for (const item of doc.data().items) {
         if (item.itemName === items[position].itemName) {
