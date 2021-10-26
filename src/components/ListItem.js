@@ -1,7 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { db } from '../lib/firebase.js';
 import { NavLink } from 'react-router-dom';
-import { collection, doc, onSnapshot } from 'firebase/firestore';
+import {
+  collection,
+  doc,
+  onSnapshot,
+  setDoc,
+  updateDoc,
+} from 'firebase/firestore';
 import Footer from './Footer';
 import { check } from 'prettier';
 
@@ -13,11 +19,11 @@ const ListItem = () => {
 
   const currToken = localStorage.getItem('currToken');
   const itemsCollectionRef = collection(db, 'shopping-list');
-  // console.log(items);
+  // FIXME: problem with populating the initial default checkBoxes
   const [checkBoxes, setCheckBoxes] = useState(
     new Array(items.length).fill(false),
   );
-  // console.log(checkBoxes);
+
   // get items
   useEffect(() => {
     const getItems = async () => {
@@ -33,15 +39,36 @@ const ListItem = () => {
     getItems();
   }, []);
 
-  const handleOnChange = async (position) => {
+  let newList = [];
+  const readList = async (position) => {
+    onSnapshot(doc(itemsCollectionRef, currToken), (doc) => {
+      for (const item of doc.data().items) {
+        if (item.itemName === items[position].itemName) {
+          item['lastPurchase'] = new Date();
+          newList.push(item);
+        } else {
+          newList.push(item);
+        }
+      }
+    });
+    setItems(newList);
+  };
+
+  const updateList = (position) => {
+    const ref = doc(db, 'shopping-list', currToken);
+    // FIXME: items is not getting the updated newList
+    setDoc(ref, { items: items });
+  };
+
+  const handleOnChange = (position) => {
     for (let item of items) {
       if (item['itemName'] === items[position]['itemName']) {
-        item['lastPurchase'] = new Date();
+        readList(position);
+        updateList(position);
       }
     }
 
-    console.log(items);
-    await setCheckBoxes(new Array(items.length).fill(false));
+    setCheckBoxes(new Array(items.length).fill(false));
     const updatedCheckBoxes = checkBoxes.map((item, index) =>
       index === position ? !item : item,
     );
@@ -61,7 +88,7 @@ const ListItem = () => {
         {items.map((item, index) => {
           return (
             <div key={index} className="item-wrapper">
-              <div className="left-section">
+              <div className="left">
                 <input
                   type="checkbox"
                   id={`custom-checkbox-${index}`}
@@ -71,7 +98,7 @@ const ListItem = () => {
                   onChange={() => handleOnChange(index)}
                 />
               </div>
-              <div className="right-section">
+              <div className="right">
                 <p>{item.itemName}</p>
               </div>
             </div>
