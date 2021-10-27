@@ -9,6 +9,7 @@ import {
   updateDoc,
 } from 'firebase/firestore';
 import Footer from './Footer';
+import { check } from 'prettier';
 
 const ListItem = () => {
   const [items, setItems] = useState([]);
@@ -18,10 +19,11 @@ const ListItem = () => {
 
   const currToken = localStorage.getItem('currToken');
   const itemsCollectionRef = collection(db, 'shopping-list');
+  const currentCollectionRef = doc(db, 'shopping-list', currToken);
   const [checkBoxes, setCheckBoxes] = useState([]);
 
   useEffect(() => {
-    const getItems = async () => {
+    const getItems = () => {
       currToken &&
         onSnapshot(doc(itemsCollectionRef, currToken), (doc) => {
           if (!doc.data()) {
@@ -36,50 +38,27 @@ const ListItem = () => {
 
   useEffect(() => {
     setCheckBoxes(new Array(items.length).fill(false));
-  }, [items]);
+  }, []);
 
-  // TODO: this is fixed now
-  console.log(checkBoxes);
-
-  const readList = (position, callback) => {
-    let newList = [];
-    onSnapshot(doc(itemsCollectionRef, currToken), (doc) => {
-      for (const item of doc.data().items) {
-        if (item.itemName === items[position].itemName) {
-          item['lastPurchase'] = new Date();
-          newList.push(item);
-        } else {
-          newList.push(item);
-        }
+  const handlePurchaseInLastDay = (position) => {
+    for (let item of items) {
+      if (
+        item.itemName === items[position].itemName &&
+        Date.now() - item.lastPurchase < 60 * 60 * 24 * 1000
+      ) {
+        return true;
       }
-    });
-    callback(newList);
-  };
-
-  const updateList = async (position) => {
-    const ref = doc(db, 'shopping-list', currToken);
-    readList(position, (listItems) => {
-      setItems(listItems);
-      // setDoc(ref, { items: [{itemName: 'melon', lastPurchase: null, nextPurchase: null}] });
-      console.log(listItems);
-      console.log(items);
-      // FIXME: items is not getting the updated newList
-      updateDoc(ref, { items: items });
-    });
+    }
+    return false;
   };
 
   const handleOnChange = (position) => {
     for (let item of items) {
-      if (item['itemName'] === items[position]['itemName']) {
-        updateList(position);
+      if (item.itemName === items[position].itemName) {
+        item.lastPurchase = Date.now();
+        updateDoc(currentCollectionRef, { items: items });
       }
     }
-
-    const updatedCheckBoxes = checkBoxes.map((item, index) =>
-      index === position ? !item : item,
-    );
-
-    setCheckBoxes(updatedCheckBoxes);
     setItems(items);
   };
 
@@ -98,7 +77,7 @@ const ListItem = () => {
                 <input
                   type="checkbox"
                   id={`custom-checkbox-${index}`}
-                  checked={checkBoxes[index]}
+                  checked={handlePurchaseInLastDay(index)}
                   onChange={() => handleOnChange(index)}
                 />
               </div>
