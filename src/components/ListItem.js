@@ -3,7 +3,7 @@ import { db } from '../lib/firebase.js';
 import { NavLink } from 'react-router-dom';
 import { collection, doc, onSnapshot } from 'firebase/firestore';
 import Footer from './Footer';
-import AddItem from './AddItem';
+import { useHistory } from 'react-router-dom';
 
 const ListItem = () => {
   const [items, setItems] = useState([]);
@@ -14,11 +14,10 @@ const ListItem = () => {
 
   const currToken = localStorage.getItem('currToken');
   const itemsCollectionRef = collection(db, 'shopping-list');
+  const history = useHistory();
 
   const addItemBtn = () => {
-    // return <button onClick={props.children}>Add Item</button>;
-    // return <AddItem />;
-    return console.log('CLICK');
+    history.push('/add');
   };
 
   // get items
@@ -28,11 +27,8 @@ const ListItem = () => {
         onSnapshot(doc(itemsCollectionRef, currToken), (doc) => {
           if (!doc.data()) {
             setEmptyList(true);
-            setRenderInput(true);
           } else {
             setItems(doc.data().items);
-            setEmptyList(false);
-            setRenderInput(false);
           }
         });
     };
@@ -40,24 +36,27 @@ const ListItem = () => {
   }, []);
 
   return (
-    <div id="main-container" className="flex-wrapper">
-      <div id="sub-wrapper">
-        <h2>Names of Items in your shopping List</h2>
-        {loading && <p>Loading ... </p>}
-        {error && <p>An error occured</p>}
-        {emptyList && <p>You don't have any list yet</p>}
-
-        {items.map((item) => {
-          return (
-            <div className="item-wrapper">
-              <p>{item.itemName}</p>
-            </div>
-          );
-        })}
-      </div>
-      {/* Render AddItem component */}
-      {/* {renderInput && <AddItem addItemBtn={addItemBtn} />} */}
-      {renderInput && <button onClick={addItemBtn}>Add Item</button>}
+    <div>
+      <section id="">
+        <div id="main-container">
+          <h2>Names of Items in your shopping List</h2>
+          {loading && <p>Loading ... </p>}
+          {error && <p>An error occured</p>}
+          {emptyList && <p>You do have any list yet</p>}
+          {items.length > 0 &&
+            items.map((item) => {
+              return (
+                <div className="item-wrapper">
+                  <p>{item.itemName}</p>
+                  {console.log(item.id)}
+                </div>
+              );
+            })}
+        </div>
+      </section>
+      <section>
+        <button onClick={addItemBtn}>Add Item</button>
+      </section>
       <Footer />
     </div>
   );
