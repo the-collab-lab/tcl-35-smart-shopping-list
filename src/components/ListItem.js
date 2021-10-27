@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
 import { db } from '../lib/firebase.js';
 import { NavLink } from 'react-router-dom';
 import {
@@ -17,12 +18,19 @@ const ListItem = () => {
   const [error, setError] = useState(false);
   const [emptyList, setEmptyList] = useState(false);
 
+  const history = useHistory();
   const currToken = localStorage.getItem('currToken');
+  let currentCollectionRef;
   const itemsCollectionRef = collection(db, 'shopping-list');
-  const currentCollectionRef = doc(db, 'shopping-list', currToken);
+  if (currToken) {
+    currentCollectionRef = doc(db, 'shopping-list', currToken);
+  }
 
   useEffect(() => {
     const getItems = () => {
+      if (!currToken) {
+        history.push('/');
+      }
       currToken &&
         onSnapshot(doc(itemsCollectionRef, currToken), (doc) => {
           if (!doc.data()) {
