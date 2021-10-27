@@ -53,6 +53,7 @@ const ListItem = () => {
           );
         })}
       </div>
+      {/* Render AddItem component */}
       {renderInput && <AddItem addItemBtn={addItemBtn} />}
       <Footer />
     </div>
