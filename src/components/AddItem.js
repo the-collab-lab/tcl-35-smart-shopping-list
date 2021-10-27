@@ -45,7 +45,9 @@ const AddItem = () => {
   };
 
   const validateInput = (list) => {
+    console.log(list);
     if (!list.itemName) {
+      console.log('no');
       setErrors(errorsList['empty']);
       return false;
     } else {
@@ -63,13 +65,13 @@ const AddItem = () => {
     const refData = await getDocs(itemsCollectionRef);
     let tokenList = refData.docs.map(({ id }) => id);
 
-    if (tokenList.includes(currToken)) {
-      const newList = {
-        itemName,
-        nextPurchase,
-        lastPurchase,
-      };
+    const newList = {
+      itemName,
+      nextPurchase,
+      lastPurchase,
+    };
 
+    if (tokenList.includes(currToken)) {
       if (validateInput(newList)) {
         await updateDoc(doc(db, 'shopping-list', currToken), {
           items: arrayUnion(newList),
@@ -79,15 +81,11 @@ const AddItem = () => {
         setTimeout(() => setHasError(false), 3000);
       }
     } else {
-      await setDoc(doc(db, 'shopping-list', currToken), {
-        items: [
-          {
-            itemName,
-            nextPurchase,
-            lastPurchase,
-          },
-        ],
-      });
+      if (validateInput(newList)) {
+        await setDoc(doc(db, 'shopping-list', currToken), {
+          items: [newList],
+        });
+      }
     }
   };
 
