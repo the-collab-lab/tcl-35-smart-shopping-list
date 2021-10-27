@@ -20,7 +20,6 @@ const ListItem = () => {
   const currToken = localStorage.getItem('currToken');
   const itemsCollectionRef = collection(db, 'shopping-list');
   const currentCollectionRef = doc(db, 'shopping-list', currToken);
-  const [checkBoxes, setCheckBoxes] = useState([]);
 
   useEffect(() => {
     const getItems = () => {
@@ -34,10 +33,6 @@ const ListItem = () => {
         });
     };
     getItems();
-  }, []);
-
-  useEffect(() => {
-    setCheckBoxes(new Array(items.length).fill(false));
   }, []);
 
   const handlePurchaseInLastDay = (position) => {
@@ -73,7 +68,7 @@ const ListItem = () => {
         {items.map((item, index) => {
           return (
             <div key={index} className="item-wrapper">
-              <div className="left">
+              <div className="left-list-pane">
                 <input
                   type="checkbox"
                   id={`custom-checkbox-${index}`}
@@ -81,7 +76,7 @@ const ListItem = () => {
                   onChange={() => handleOnChange(index)}
                 />
               </div>
-              <div className="right">
+              <div className="right-list-pane">
                 <p>{item.itemName}</p>
               </div>
             </div>
