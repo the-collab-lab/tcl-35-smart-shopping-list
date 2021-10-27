@@ -45,13 +45,15 @@ const AddItem = () => {
   };
 
   const validateInput = (list) => {
-    for (const item of items) {
-      if (!list.itemName) {
-        setErrors(errorsList['empty']);
-        return false;
-      } else if (cleanString(item.itemName) === cleanString(list.itemName)) {
-        setErrors(errorsList['duplicate']);
-        return false;
+    if (!list.itemName) {
+      setErrors(errorsList['empty']);
+      return false;
+    } else {
+      for (const item of items) {
+        if (cleanString(item.itemName) === cleanString(list.itemName)) {
+          setErrors(errorsList['duplicate']);
+          return false;
+        }
       }
     }
     return true;
