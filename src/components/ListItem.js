@@ -15,8 +15,10 @@ const ListItem = () => {
   const currToken = localStorage.getItem('currToken');
   const itemsCollectionRef = collection(db, 'shopping-list');
 
-  const addItemBtn = (props) => {
-    return <button onClick={props.children}>Add Item</button>;
+  const addItemBtn = () => {
+    // return <button onClick={props.children}>Add Item</button>;
+    // return <AddItem />;
+    return console.log('CLICK');
   };
 
   // get items
@@ -54,7 +56,8 @@ const ListItem = () => {
         })}
       </div>
       {/* Render AddItem component */}
-      {renderInput && <AddItem addItemBtn={addItemBtn} />}
+      {/* {renderInput && <AddItem addItemBtn={addItemBtn} />} */}
+      {renderInput && <button onClick={addItemBtn}>Add Item</button>}
       <Footer />
     </div>
   );
