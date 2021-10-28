@@ -1,16 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { db } from '../lib/firebase.js';
-import { NavLink } from 'react-router-dom';
-import {
-  collection,
-  doc,
-  onSnapshot,
-  setDoc,
-  updateDoc,
-} from 'firebase/firestore';
+import { collection, doc, onSnapshot, updateDoc } from 'firebase/firestore';
 import Footer from './Footer';
-import { check } from 'prettier';
 
 const ListItem = () => {
   const [items, setItems] = useState([]);
@@ -22,6 +14,7 @@ const ListItem = () => {
   const currToken = localStorage.getItem('currToken');
   let currentCollectionRef;
   const itemsCollectionRef = collection(db, 'shopping-list');
+
   if (currToken) {
     currentCollectionRef = doc(db, 'shopping-list', currToken);
   }
@@ -43,11 +36,11 @@ const ListItem = () => {
     getItems();
   }, []);
 
-  const handlePurchaseInLastDay = (position) => {
+  const handlePurchaseInLastDay = (itemName, lastPurchase) => {
     for (let item of items) {
       if (
-        item.itemName === items[position].itemName &&
-        Date.now() - item.lastPurchase < 60 * 60 * 24 * 1000
+        item.itemName === itemName &&
+        Date.now() - lastPurchase < 60 * 60 * 24 * 1000
       ) {
         return true;
       }
@@ -55,9 +48,9 @@ const ListItem = () => {
     return false;
   };
 
-  const handleOnChange = (position) => {
+  const handleOnChange = (itemName) => {
     for (let item of items) {
-      if (item.itemName === items[position].itemName) {
+      if (item.itemName === itemName) {
         item.lastPurchase = Date.now();
         updateDoc(currentCollectionRef, { items: items });
       }
@@ -73,15 +66,18 @@ const ListItem = () => {
         {error && <p>An error occured</p>}
         {emptyList && <p>You dont have any list yet</p>}
 
-        {items.map((item, index) => {
+        {items.map((item) => {
           return (
-            <div key={index} className="item-wrapper">
+            <div key={item.itemName} className="item-wrapper">
               <div className="left-list-pane">
                 <input
                   type="checkbox"
-                  id={`custom-checkbox-${index}`}
-                  checked={handlePurchaseInLastDay(index)}
-                  onChange={() => handleOnChange(index)}
+                  id={item.itemName}
+                  checked={handlePurchaseInLastDay(
+                    item.itemName,
+                    item.lastPurchase,
+                  )}
+                  onChange={() => handleOnChange(item.itemName)}
                 />
               </div>
               <div className="right-list-pane">
