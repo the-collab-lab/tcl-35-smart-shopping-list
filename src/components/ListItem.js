@@ -36,16 +36,10 @@ const ListItem = () => {
     getItems();
   }, []);
 
-  const handlePurchaseInLastDay = (itemName, lastPurchase) => {
-    for (let item of items) {
-      if (
-        item.itemName === itemName &&
-        Date.now() - lastPurchase < 60 * 60 * 24 * 1000
-      ) {
-        return true;
-      }
-    }
-    return false;
+  const handlePurchaseInLastDay = (lastPurchase) => {
+    if (!lastPurchase) return false;
+    const DayInMilliSeconds = 60 * 60 * 24 * 1000;
+    return Date.now() - lastPurchase < DayInMilliSeconds;
   };
 
   const handleOnChange = (itemName) => {
@@ -73,10 +67,7 @@ const ListItem = () => {
                 <input
                   type="checkbox"
                   id={item.itemName}
-                  checked={handlePurchaseInLastDay(
-                    item.itemName,
-                    item.lastPurchase,
-                  )}
+                  checked={handlePurchaseInLastDay(item.lastPurchase)}
                   onChange={() => handleOnChange(item.itemName)}
                 />
               </div>
