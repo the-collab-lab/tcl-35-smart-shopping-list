@@ -22,19 +22,22 @@ const ListItem = () => {
 
   // get items
   useEffect(() => {
+    setLoading(true);
     const getItems = async () => {
       currToken &&
         onSnapshot(doc(itemsCollectionRef, currToken), (doc) => {
           if (!doc.data()) {
             setEmptyList(true);
+            setLoading(false);
           } else {
             setItems(doc.data().items);
+            setLoading(false);
           }
         });
     };
     getItems();
   }, []);
-
+  console.log(emptyList);
   return (
     <div>
       <section id="">
@@ -43,19 +46,17 @@ const ListItem = () => {
           {loading && <p>Loading ... </p>}
           {error && <p>An error occured</p>}
           {emptyList && <p>You do have any list yet</p>}
-          {items.length > 0 &&
-            items.map((item) => {
-              return (
-                <div className="item-wrapper">
-                  <p>{item.itemName}</p>
-                  {console.log(item.id)}
-                </div>
-              );
-            })}
+          {items.map((item) => {
+            return (
+              <div className="item-wrapper">
+                <p key="item.itemName">{item.itemName}</p>
+              </div>
+            );
+          })}
         </div>
       </section>
       <section>
-        <button onClick={addItemBtn}>Add Item</button>
+        {emptyList && <button onClick={addItemBtn}>Add Item</button>}
       </section>
       <Footer />
     </div>

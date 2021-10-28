@@ -83,7 +83,7 @@ const AddItem = () => {
             itemName,
             nextPurchase,
             lastPurchase,
-            id: currToken,
+            // id: currToken,
           },
         ],
       });
