@@ -37,7 +37,7 @@ const ListItem = () => {
     };
     getItems();
   }, []);
-  console.log(emptyList);
+
   return (
     <div>
       <section id="">
@@ -45,7 +45,7 @@ const ListItem = () => {
           <h2>Names of Items in your shopping List</h2>
           {loading && <p>Loading ... </p>}
           {error && <p>An error occured</p>}
-          {emptyList && <p>You do have any list yet</p>}
+          {emptyList && <p>You don't have any list yet</p>}
           {items.map((item) => {
             return (
               <div className="item-wrapper">
