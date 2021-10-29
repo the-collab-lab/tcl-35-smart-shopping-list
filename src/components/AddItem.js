@@ -45,9 +45,7 @@ const AddItem = () => {
   };
 
   const validateInput = (list) => {
-    console.log(list);
     if (!list.itemName) {
-      console.log('no');
       setErrors(errorsList['empty']);
       return false;
     } else {
