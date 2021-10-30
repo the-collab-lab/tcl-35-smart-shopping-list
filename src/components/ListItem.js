@@ -3,7 +3,6 @@ import { useHistory } from 'react-router-dom';
 import { db } from '../lib/firebase.js';
 import { collection, doc, onSnapshot, updateDoc } from 'firebase/firestore';
 import Footer from './Footer';
-import { useHistory } from 'react-router-dom';
 
 const ListItem = () => {
   const [items, setItems] = useState([]);
