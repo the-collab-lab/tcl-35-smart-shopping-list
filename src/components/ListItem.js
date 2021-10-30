@@ -38,6 +38,23 @@ const ListItem = () => {
     getItems();
   }, []);
 
+ const handlePurchaseInLastDay = (lastPurchase) => {
+    if (!lastPurchase) return false;
+    const DayInMilliSeconds = 60 * 60 * 24 * 1000;
+    return Date.now() - lastPurchase < DayInMilliSeconds;
+  };
+
+  const handleOnChange = (itemName) => {
+    for (let item of items) {
+      if (item.itemName === itemName) {
+        item.lastPurchase = Date.now();
+        updateDoc(currentCollectionRef, { items: items });
+      }
+    }
+    setItems(items);
+  };
+
+
   return (
   <div id="main-container" className="flex-wrapper">
       <div id="sub-wrapper">
