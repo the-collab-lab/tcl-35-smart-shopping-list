@@ -15,7 +15,6 @@ const ListItem = () => {
   const currToken = localStorage.getItem('currToken');
   let currentCollectionRef;
   const itemsCollectionRef = collection(db, 'shopping-list');
-  const history = useHistory();
 
   const addItemBtn = () => {
     history.push('/add');
