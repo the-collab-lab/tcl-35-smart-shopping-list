@@ -45,13 +45,15 @@ const AddItem = () => {
   };
 
   const validateInput = (list) => {
-    for (const item of items) {
-      if (!list.itemName) {
-        setErrors(errorsList['empty']);
-        return false;
-      } else if (cleanString(item.itemName) === cleanString(list.itemName)) {
-        setErrors(errorsList['duplicate']);
-        return false;
+    if (!list.itemName) {
+      setErrors(errorsList['empty']);
+      return false;
+    } else {
+      for (const item of items) {
+        if (cleanString(item.itemName) === cleanString(list.itemName)) {
+          setErrors(errorsList['duplicate']);
+          return false;
+        }
       }
     }
     return true;
@@ -61,13 +63,13 @@ const AddItem = () => {
     const refData = await getDocs(itemsCollectionRef);
     let tokenList = refData.docs.map(({ id }) => id);
 
-    if (tokenList.includes(currToken)) {
-      const newList = {
-        itemName,
-        nextPurchase,
-        lastPurchase,
-      };
+    const newList = {
+      itemName,
+      nextPurchase,
+      lastPurchase,
+    };
 
+    if (tokenList.includes(currToken)) {
       if (validateInput(newList)) {
         await updateDoc(doc(db, 'shopping-list', currToken), {
           items: arrayUnion(newList),
@@ -77,15 +79,11 @@ const AddItem = () => {
         setTimeout(() => setHasError(false), 3000);
       }
     } else {
-      await setDoc(doc(db, 'shopping-list', currToken), {
-        items: [
-          {
-            itemName,
-            nextPurchase,
-            lastPurchase,
-          },
-        ],
-      });
+      if (validateInput(newList)) {
+        await setDoc(doc(db, 'shopping-list', currToken), {
+          items: [newList],
+        });
+      }
     }
   };
 
