@@ -61,25 +61,6 @@ const ListItem = () => {
   };
 
   return (
-    <div>
-      <section id="">
-        <div id="main-container">
-          <h2>Names of Items in your shopping List</h2>
-          {loading && <p>Loading ... </p>}
-          {error && <p>An error occured</p>}
-          {emptyList && <p>You don't have any list yet</p>}
-          {items.map((item) => {
-            return (
-              <div className="item-wrapper">
-                <p key="item.itemName">{item.itemName}</p>
-              </div>
-            );
-          })}
-        </div>
-      </section>
-      <section>
-        {emptyList && <button onClick={addItemBtn}>Add Item</button>}
-      </section>
     <div id="main-container" className="flex-wrapper">
       <div id="sub-wrapper">
         <h2>Names of Items in your shopping List</h2>
