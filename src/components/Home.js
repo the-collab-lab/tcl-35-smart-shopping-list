@@ -31,6 +31,7 @@ const Home = () => {
       setShowErrorMessage(true);
       setTimeout(() => setShowErrorMessage(false), 3000);
     } else {
+      localStorage.setItem('currToken', joinlist);
       history.push('/list');
     }
   };
@@ -49,9 +50,6 @@ const Home = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (joinlist) {
-      localStorage.setItem('currToken', joinlist);
-    }
     fetchTokens();
   };
 
