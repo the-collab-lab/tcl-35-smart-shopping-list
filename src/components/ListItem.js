@@ -67,6 +67,7 @@ const ListItem = () => {
                 <input
                   type="checkbox"
                   id={item.itemName}
+                  disabled={handlePurchaseInLastDay(item.lastPurchase)}
                   checked={handlePurchaseInLastDay(item.lastPurchase)}
                   onChange={() => handleOnChange(item.itemName)}
                 />
