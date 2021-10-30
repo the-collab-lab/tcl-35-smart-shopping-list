@@ -24,9 +24,8 @@ const ListItem = () => {
     currentCollectionRef = doc(db, 'shopping-list', currToken);
   }
 
-  useEffect(() => {
-    setLoading(true);
-    const getItems = async () => {
+ useEffect(() => {
+  setLoading(true);
     const getItems = () => {
       if (!currToken) {
         history.push('/');
