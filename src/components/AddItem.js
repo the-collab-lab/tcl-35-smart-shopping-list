@@ -79,11 +79,23 @@ const AddItem = () => {
         setTimeout(() => setHasError(false), 3000);
       }
     } else {
+      await setDoc(doc(db, 'shopping-list', currToken), {
+        items: [
+          {
+            itemName,
+            nextPurchase,
+            lastPurchase,
+            // id: currToken,
+          },
+        ],
+      });
+
       if (validateInput(newList)) {
         await setDoc(doc(db, 'shopping-list', currToken), {
           items: [newList],
         });
       }
+
     }
   };
 
