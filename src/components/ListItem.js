@@ -16,6 +16,8 @@ const ListItem = () => {
   const itemsCollectionRef = collection(db, 'shopping-list');
   const history = useHistory();
 
+  //route to list
+
   const addItemBtn = () => {
     history.push('/add');
   };
