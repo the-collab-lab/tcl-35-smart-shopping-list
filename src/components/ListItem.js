@@ -1,7 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { db } from '../lib/firebase.js';
 import { NavLink } from 'react-router-dom';
-import { collection, doc, onSnapshot, updateDoc } from 'firebase/firestore';
+import {
+  collection,
+  doc,
+  onSnapshot,
+  updateDoc,
+  getDoc,
+} from 'firebase/firestore';
 import Footer from './Footer';
 import { useHistory } from 'react-router-dom';
 
@@ -64,9 +70,37 @@ const ListItem = () => {
     setItems(items);
   };
 
+  const cleanString = (str) => {
+    const regex = /[a-z]/g;
+    return str.trim().toLowerCase().match(regex).join('');
+  };
+
+  const searchItems = async (e) => {
+    let docSnap = await getDoc(currentCollectionRef);
+    const data = docSnap.data().items;
+    const input = e.target.value;
+    const filteredItems = [];
+    for (const item of data) {
+      if (cleanString(item.itemName).includes(cleanString(input))) {
+        filteredItems.push(item);
+      }
+    }
+    setItems(filteredItems);
+  };
+
   return (
     <div>
       <div id="main-container" className="flex-wrapper">
+        <input
+          type="text"
+          placeholder="Bread"
+          id="itemName"
+          // value={}
+          onKeyUp={(e) => {
+            searchItems(e);
+          }}
+        />
+
         <div id="sub-wrapper">
           <h2>Names of Items in your shopping List</h2>
           {loading && <p>Loading ... </p>}
