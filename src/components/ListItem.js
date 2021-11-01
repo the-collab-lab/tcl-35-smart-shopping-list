@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { db } from '../lib/firebase.js';
 import { NavLink } from 'react-router-dom';
-import { collection, doc, onSnapshot } from 'firebase/firestore';
+import { collection, doc, onSnapshot, updateDoc } from 'firebase/firestore';
 import Footer from './Footer';
 import { useHistory } from 'react-router-dom';
 
@@ -13,8 +13,13 @@ const ListItem = () => {
   const [renderInput, setRenderInput] = useState(false);
 
   const currToken = localStorage.getItem('currToken');
+  let currentCollectionRef;
   const itemsCollectionRef = collection(db, 'shopping-list');
   const history = useHistory();
+
+  if (currToken) {
+    currentCollectionRef = doc(db, 'shopping-list', currToken);
+  }
 
   //route to list
 
@@ -26,6 +31,9 @@ const ListItem = () => {
   useEffect(() => {
     setLoading(true);
     const getItems = async () => {
+      if (!currToken) {
+        history.push('/');
+      }
       currToken &&
         onSnapshot(doc(itemsCollectionRef, currToken), (doc) => {
           if (!doc.data()) {
@@ -40,23 +48,51 @@ const ListItem = () => {
     getItems();
   }, []);
 
+  const handlePurchaseInLastDay = (lastPurchase) => {
+    if (!lastPurchase) return false;
+    const DayInMilliSeconds = 60 * 60 * 24 * 1000;
+    return Date.now() - lastPurchase < DayInMilliSeconds;
+  };
+
+  const handleOnChange = (itemName) => {
+    for (let item of items) {
+      if (item.itemName === itemName) {
+        item.lastPurchase = Date.now();
+        updateDoc(currentCollectionRef, { items: items });
+      }
+    }
+    setItems(items);
+  };
+
   return (
     <div>
-      <section id="">
-        <div id="main-container">
+      <div id="main-container" className="flex-wrapper">
+        <div id="sub-wrapper">
           <h2>Names of Items in your shopping List</h2>
           {loading && <p>Loading ... </p>}
           {error && <p>An error occured</p>}
-          {emptyList && <p>You don't have any list yet</p>}
+          {emptyList && <p>You dont have any list yet</p>}
+
           {items.map((item) => {
             return (
-              <div className="item-wrapper">
-                <p key="item.itemName">{item.itemName}</p>
+              <div key={item.itemName} className="item-wrapper">
+                <div className="left-list-pane">
+                  <input
+                    type="checkbox"
+                    id={item.itemName}
+                    disabled={handlePurchaseInLastDay(item.lastPurchase)}
+                    checked={handlePurchaseInLastDay(item.lastPurchase)}
+                    onChange={() => handleOnChange(item.itemName)}
+                  />
+                </div>
+                <div className="right-list-pane">
+                  <p>{item.itemName}</p>
+                </div>
               </div>
             );
           })}
         </div>
-      </section>
+      </div>
       <section>
         {emptyList && <button onClick={addItemBtn}>Add Item</button>}
       </section>
