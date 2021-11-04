@@ -58,17 +58,15 @@ const ListItem = () => {
   const handleOnChange = (itemName) => {
     for (let item of items) {
       if (item.itemName === itemName) {
-        item.lastPurchase = Date.now();
-        const daysSinceLastTransaction = item.lastPurchasedDate
-          ? Math.round(
-              (Date.now() - item.lastPurchasedDate) / 1000 / 60 / 60 / 24,
-            )
+        const daysSinceLastTransaction = item.lastPurchase
+          ? Math.round((Date.now() - item.lastPurchase) / 1000 / 60 / 60 / 24)
           : 0;
         item.estimatedPurchaseInterval = calculateEstimate(
           item.estimatedPurchaseInterval,
           daysSinceLastTransaction,
           item.totalPurchases,
         );
+        item.lastPurchase = Date.now();
         item.totalPurchases = item.totalPurchases + 1;
         updateDoc(currentCollectionRef, { items: items });
       }
@@ -92,7 +90,7 @@ const ListItem = () => {
                   <input
                     type="checkbox"
                     id={item.itemName}
-                    disabled={handlePurchaseInLastDay(item.lastPurchase)}
+                    // disabled={handlePurchaseInLastDay(item.lastPurchase)}
                     checked={handlePurchaseInLastDay(item.lastPurchase)}
                     onChange={() => handleOnChange(item.itemName)}
                   />
