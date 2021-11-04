@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { db } from '../lib/firebase.js';
+import { calculateEstimate } from '@the-collab-lab/shopping-list-utils';
 import { NavLink } from 'react-router-dom';
 import { collection, doc, onSnapshot, updateDoc } from 'firebase/firestore';
 import Footer from './Footer';
@@ -58,6 +59,17 @@ const ListItem = () => {
     for (let item of items) {
       if (item.itemName === itemName) {
         item.lastPurchase = Date.now();
+        const daysSinceLastTransaction = item.lastPurchasedDate
+          ? Math.round(
+              (Date.now() - item.lastPurchasedDate) / 1000 / 60 / 60 / 24,
+            )
+          : 0;
+        item.estimatedPurchaseInterval = calculateEstimate(
+          item.estimatedPurchaseInterval,
+          daysSinceLastTransaction,
+          item.totalPurchases,
+        );
+        item.totalPurchases = item.totalPurchases + 1;
         updateDoc(currentCollectionRef, { items: items });
       }
     }

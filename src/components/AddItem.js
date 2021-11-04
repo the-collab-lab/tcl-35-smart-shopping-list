@@ -67,6 +67,8 @@ const AddItem = () => {
       itemName,
       nextPurchase,
       lastPurchase,
+      estimatedPurchaseInterval: null,
+      totalPurchases: 0,
     };
 
     if (tokenList.includes(currToken)) {
