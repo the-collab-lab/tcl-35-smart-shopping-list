@@ -17,7 +17,6 @@ const ListItem = () => {
   const [error, setError] = useState(false);
   const [emptyList, setEmptyList] = useState(false);
   const [renderInput, setRenderInput] = useState(false);
-  const [inputValue, setInputValue] = useState('');
 
   const currToken = localStorage.getItem('currToken');
   let currentCollectionRef;
@@ -29,7 +28,6 @@ const ListItem = () => {
   }
 
   //route to list
-
   const addItemBtn = () => {
     history.push('/add');
   };
@@ -45,11 +43,10 @@ const ListItem = () => {
         onSnapshot(doc(itemsCollectionRef, currToken), (doc) => {
           if (!doc.data()) {
             setEmptyList(true);
-            setLoading(false);
           } else {
             setItems(doc.data().items);
-            setLoading(false);
           }
+          setLoading(false);
         });
     };
     getItems();
@@ -76,25 +73,20 @@ const ListItem = () => {
     return str.trim().toLowerCase().match(regex).join('');
   };
 
-  const createButton = () => {};
-
   const searchItems = async (e) => {
     let docSnap = await getDoc(currentCollectionRef);
     const data = docSnap.data().items;
     const filteredItems = [];
 
     for (const item of data) {
-      if (cleanString(item.itemName).includes(cleanString(e.target.value))) {
-        filteredItems.push(item);
+      console.log(item);
+      if (item.itemName.length && e.target.value.length) {
+        if (cleanString(item.itemName).includes(cleanString(e.target.value))) {
+          filteredItems.push(item);
+        }
       }
     }
-
-    createButton();
     setItems(filteredItems);
-  };
-
-  const resetInput = () => {
-    setInputValue('');
   };
 
   return (
@@ -104,16 +96,13 @@ const ListItem = () => {
           <h2>Names of Items in your shopping List</h2>
 
           <input
-            type="text"
+            type="search"
             placeholder="Bread"
             id="itemName"
-            // value={inputValue}
             onKeyUp={(e) => {
               searchItems(e);
             }}
           />
-
-          <button onKeyPress={resetInput}>X</button>
 
           {loading && <p>Loading ... </p>}
           {error && <p>An error occured</p>}
