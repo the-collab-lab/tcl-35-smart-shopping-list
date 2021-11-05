@@ -17,6 +17,7 @@ const ListItem = () => {
   const [error, setError] = useState(false);
   const [emptyList, setEmptyList] = useState(false);
   const [renderInput, setRenderInput] = useState(false);
+  const [inputValue, setInputValue] = useState('');
 
   const currToken = localStorage.getItem('currToken');
   let currentCollectionRef;
@@ -75,34 +76,45 @@ const ListItem = () => {
     return str.trim().toLowerCase().match(regex).join('');
   };
 
+  const createButton = () => {};
+
   const searchItems = async (e) => {
     let docSnap = await getDoc(currentCollectionRef);
     const data = docSnap.data().items;
-    const input = e.target.value;
     const filteredItems = [];
+
     for (const item of data) {
-      if (cleanString(item.itemName).includes(cleanString(input))) {
+      if (cleanString(item.itemName).includes(cleanString(e.target.value))) {
         filteredItems.push(item);
       }
     }
+
+    createButton();
     setItems(filteredItems);
+  };
+
+  const resetInput = () => {
+    setInputValue('');
   };
 
   return (
     <div>
       <div id="main-container" className="flex-wrapper">
-        <input
-          type="text"
-          placeholder="Bread"
-          id="itemName"
-          // value={}
-          onKeyUp={(e) => {
-            searchItems(e);
-          }}
-        />
-
         <div id="sub-wrapper">
           <h2>Names of Items in your shopping List</h2>
+
+          <input
+            type="text"
+            placeholder="Bread"
+            id="itemName"
+            // value={inputValue}
+            onKeyUp={(e) => {
+              searchItems(e);
+            }}
+          />
+
+          <button onKeyPress={resetInput}>X</button>
+
           {loading && <p>Loading ... </p>}
           {error && <p>An error occured</p>}
           {emptyList && <p>You dont have any list yet</p>}
