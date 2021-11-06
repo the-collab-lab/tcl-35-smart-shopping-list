@@ -76,10 +76,10 @@ const ListItem = () => {
   const searchItems = async (e) => {
     let docSnap = await getDoc(currentCollectionRef);
     const data = docSnap.data().items;
-    const filteredItems = [];
+    let filteredItems = [];
 
     for (const item of data) {
-      console.log(item);
+      if (!e.target.value.length) filteredItems = data;
       if (item.itemName.length && e.target.value.length) {
         if (cleanString(item.itemName).includes(cleanString(e.target.value))) {
           filteredItems.push(item);
@@ -98,7 +98,7 @@ const ListItem = () => {
           <input
             type="search"
             placeholder="Bread"
-            id="itemName"
+            id="searchInput"
             onKeyUp={(e) => {
               searchItems(e);
             }}
