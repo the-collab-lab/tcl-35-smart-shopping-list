@@ -138,3 +138,12 @@ a {
   font-size: 1rem;
   color: red;
 }
+
+.filter {
+  text-align: left;
+}
+
+.search {
+  height: 40px;
+  width: 100%;
+}

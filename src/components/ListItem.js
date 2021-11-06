@@ -1,15 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { db } from '../lib/firebase.js';
 import { NavLink } from 'react-router-dom';
-import {
-  collection,
-  doc,
-  onSnapshot,
-  updateDoc,
-  getDoc,
-} from 'firebase/firestore';
+import { collection, doc, onSnapshot, updateDoc } from 'firebase/firestore';
 import Footer from './Footer';
 import { useHistory } from 'react-router-dom';
+import { searchListHandler } from './customFilter/customFilter.js';
 
 const ListItem = () => {
   const [items, setItems] = useState([]);
@@ -17,6 +12,7 @@ const ListItem = () => {
   const [error, setError] = useState(false);
   const [emptyList, setEmptyList] = useState(false);
   const [renderInput, setRenderInput] = useState(false);
+  const [searchlist, setSearchList] = useState('');
 
   const currToken = localStorage.getItem('currToken');
   let currentCollectionRef;
@@ -28,6 +24,7 @@ const ListItem = () => {
   }
 
   //route to list
+
   const addItemBtn = () => {
     history.push('/add');
   };
@@ -43,10 +40,11 @@ const ListItem = () => {
         onSnapshot(doc(itemsCollectionRef, currToken), (doc) => {
           if (!doc.data()) {
             setEmptyList(true);
+            setLoading(false);
           } else {
             setItems(doc.data().items);
+            setLoading(false);
           }
-          setLoading(false);
         });
     };
     getItems();
@@ -68,64 +66,46 @@ const ListItem = () => {
     setItems(items);
   };
 
-  const cleanString = (str) => {
-    const regex = /[a-z]/g;
-    return str.trim().toLowerCase().match(regex).join('');
-  };
-
-  const searchItems = async (e) => {
-    let docSnap = await getDoc(currentCollectionRef);
-    const data = docSnap.data().items;
-    let filteredItems = [];
-
-    for (const item of data) {
-      if (!e.target.value.length) filteredItems = data;
-      if (item.itemName.length && e.target.value.length) {
-        if (cleanString(item.itemName).includes(cleanString(e.target.value))) {
-          filteredItems.push(item);
-        }
-      }
-    }
-    setItems(filteredItems);
-  };
-
   return (
     <div>
       <div id="main-container" className="flex-wrapper">
         <div id="sub-wrapper">
           <h2>Names of Items in your shopping List</h2>
-
-          <input
-            type="search"
-            placeholder="Bread"
-            id="searchInput"
-            onKeyUp={(e) => {
-              searchItems(e);
-            }}
-          />
-
           {loading && <p>Loading ... </p>}
           {error && <p>An error occured</p>}
           {emptyList && <p>You dont have any list yet</p>}
 
-          {items.map((item) => {
-            return (
-              <div key={item.itemName} className="item-wrapper">
-                <div className="left-list-pane">
-                  <input
-                    type="checkbox"
-                    id={item.itemName}
-                    disabled={handlePurchaseInLastDay(item.lastPurchase)}
-                    checked={handlePurchaseInLastDay(item.lastPurchase)}
-                    onChange={() => handleOnChange(item.itemName)}
-                  />
+          <div className="filter">
+            <label htmlFor="search">Filter items</label>
+            <br />
+            <input
+              type="search"
+              placeholder="start typing here..."
+              name="searchlist"
+              className="search"
+              onChange={(e) => setSearchList(e.target.value)}
+            />
+          </div>
+
+          {searchListHandler({ value: searchlist, items }).length > 0 &&
+            searchListHandler({ value: searchlist, items }).map((item) => {
+              return (
+                <div key={item.itemName} className="item-wrapper">
+                  <div className="left-list-pane">
+                    <input
+                      type="checkbox"
+                      id={item.itemName}
+                      disabled={handlePurchaseInLastDay(item.lastPurchase)}
+                      checked={handlePurchaseInLastDay(item.lastPurchase)}
+                      onChange={() => handleOnChange(item.itemName)}
+                    />
+                  </div>
+                  <div className="right-list-pane">
+                    <p>{item.itemName}</p>
+                  </div>
                 </div>
-                <div className="right-list-pane">
-                  <p>{item.itemName}</p>
-                </div>
-              </div>
-            );
-          })}
+              );
+            })}
         </div>
       </div>
       <section>
