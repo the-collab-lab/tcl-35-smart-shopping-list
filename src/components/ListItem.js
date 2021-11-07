@@ -4,6 +4,7 @@ import { NavLink } from 'react-router-dom';
 import { collection, doc, onSnapshot, updateDoc } from 'firebase/firestore';
 import Footer from './Footer';
 import { useHistory } from 'react-router-dom';
+import { searchListHandler } from './customFilter/customFilter.js';
 
 const ListItem = () => {
   const [items, setItems] = useState([]);
@@ -11,6 +12,7 @@ const ListItem = () => {
   const [error, setError] = useState(false);
   const [emptyList, setEmptyList] = useState(false);
   const [renderInput, setRenderInput] = useState(false);
+  const [searchlist, setSearchList] = useState('');
 
   const currToken = localStorage.getItem('currToken');
   let currentCollectionRef;
@@ -73,24 +75,37 @@ const ListItem = () => {
           {error && <p>An error occured</p>}
           {emptyList && <p>You dont have any list yet</p>}
 
-          {items.map((item) => {
-            return (
-              <div key={item.itemName} className="item-wrapper">
-                <div className="left-list-pane">
-                  <input
-                    type="checkbox"
-                    id={item.itemName}
-                    disabled={handlePurchaseInLastDay(item.lastPurchase)}
-                    checked={handlePurchaseInLastDay(item.lastPurchase)}
-                    onChange={() => handleOnChange(item.itemName)}
-                  />
+          <div className="filter">
+            <label htmlFor="search">Filter items</label>
+            <br />
+            <input
+              type="search"
+              placeholder="start typing here..."
+              name="searchlist"
+              className="search"
+              onChange={(e) => setSearchList(e.target.value)}
+            />
+          </div>
+
+          {searchListHandler({ value: searchlist, items }).length > 0 &&
+            searchListHandler({ value: searchlist, items }).map((item) => {
+              return (
+                <div key={item.itemName} className="item-wrapper">
+                  <div className="left-list-pane">
+                    <input
+                      type="checkbox"
+                      id={item.itemName}
+                      disabled={handlePurchaseInLastDay(item.lastPurchase)}
+                      checked={handlePurchaseInLastDay(item.lastPurchase)}
+                      onChange={() => handleOnChange(item.itemName)}
+                    />
+                  </div>
+                  <div className="right-list-pane">
+                    <p>{item.itemName}</p>
+                  </div>
                 </div>
-                <div className="right-list-pane">
-                  <p>{item.itemName}</p>
-                </div>
-              </div>
-            );
-          })}
+              );
+            })}
         </div>
       </div>
       <section>
