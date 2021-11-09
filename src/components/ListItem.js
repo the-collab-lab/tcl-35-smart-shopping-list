@@ -76,6 +76,46 @@ const ListItem = () => {
     setItems(items);
   };
 
+  const DaysInMilliSeconds = 60 * 60 * 24 * 1000;
+
+  const checkForInactive = (item) => {
+    if (item.totalPurchases === 1) {
+      return true;
+    } else {
+      return (
+        ((Date.now() - item.lastPurchase) / item.estimatedPurchaseInterval) *
+          DaysInMilliSeconds >
+        2
+      );
+    }
+  };
+
+  const sortItems = (items) => {
+    return items.sort((a, b) => {
+      if (checkForInactive(a)) {
+        return -1;
+      }
+
+      if (checkForInactive(b)) {
+        return -1;
+      }
+
+      if (a.estimatedPurchaseInterval < b.estimatedPurchaseInterval) {
+        return 1;
+      } else if (a.estimatedPurchaseInterval > b.estimatedPurchaseInterval) {
+        return -1;
+      } else {
+        if (a.itemName < b.itemName) {
+          return -1;
+        } else {
+          return 1;
+        }
+      }
+    });
+  };
+
+  sortItems(items);
+
   return (
     <div>
       <div id="main-container" className="flex-wrapper">
