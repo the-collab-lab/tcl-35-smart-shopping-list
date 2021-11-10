@@ -6,6 +6,7 @@ import { collection, doc, onSnapshot, updateDoc } from 'firebase/firestore';
 import Footer from './Footer';
 import { useHistory } from 'react-router-dom';
 import { searchListHandler } from './customFilter/customFilter.js';
+import { check } from 'prettier';
 
 const ListItem = () => {
   const [items, setItems] = useState([]);
@@ -96,9 +97,9 @@ const ListItem = () => {
 
   const DaysInMilliSeconds = 60 * 60 * 24 * 1000;
 
-  const checkForInactive = (item) => {
-    if (item.totalPurchases === 1) {
-      return true;
+  const calculateActive = (item) => {
+    if (item.totalPurchases <= 1) {
+      return false;
     } else {
       return (
         ((Date.now() - item.lastPurchase) / item.estimatedPurchaseInterval) *
@@ -110,12 +111,20 @@ const ListItem = () => {
 
   const sortItems = (items) => {
     return items.sort((a, b) => {
-      if (!a.estimatedPurchaseInterval) {
+      if (!a.estimatedPurchaseInterval || !calculateActive) {
         return -1;
       }
 
-      if (!b.estimatedPurchaseInterval) {
+      if (!b.estimatedPurchaseInterval || !calculateActive) {
         return -1;
+      }
+
+      if (!a.estimatedPurchaseInterval && !b.estimatedPurchaseInterval) {
+        if (a.itemName < b.itemName) {
+          return -1;
+        } else {
+          return 1;
+        }
       }
 
       if (a.estimatedPurchaseInterval < b.estimatedPurchaseInterval) {
