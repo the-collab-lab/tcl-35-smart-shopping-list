@@ -12,7 +12,6 @@ const ListItem = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
   const [emptyList, setEmptyList] = useState(false);
-  const [renderInput, setRenderInput] = useState(false);
   const [searchlist, setSearchList] = useState('');
 
   const currToken = localStorage.getItem('currToken');
@@ -76,6 +75,26 @@ const ListItem = () => {
     setItems(items);
   };
 
+  const addBgColor = (nextPurchase) => {
+    if (nextPurchase === 7) {
+      return 'green-bg';
+    } else if (nextPurchase === 14) {
+      return 'yellow-bg';
+    } else {
+      return 'purple-bg';
+    }
+  };
+
+  const addAriaLabel = (nextPurchase) => {
+    if (nextPurchase === 7) {
+      return '7 days';
+    } else if (nextPurchase === 14) {
+      return '14 days';
+    } else {
+      return '30 days';
+    }
+  };
+
   const DaysInMilliSeconds = 60 * 60 * 24 * 1000;
 
   const checkForInactive = (item) => {
@@ -123,10 +142,12 @@ const ListItem = () => {
           <h2>Names of Items in your shopping List</h2>
           {loading && <p>Loading ... </p>}
           {error && <p>An error occured</p>}
-          {emptyList && <p>You dont have any list yet</p>}
+          {emptyList && <p>You don't have any list yet</p>}
 
           <div className="filter">
-            <label htmlFor="search">Filter items</label>
+            <label htmlFor="search" className="search-label">
+              Filter items:
+            </label>
             <br />
             <input
               type="search"
@@ -140,8 +161,11 @@ const ListItem = () => {
           {searchListHandler({ value: searchlist, items }).length > 0 &&
             searchListHandler({ value: searchlist, items }).map((item) => {
               return (
-                <div key={item.itemName} className="item-wrapper">
-                  <div className="left-list-pane">
+                <div
+                  key={item.itemName}
+                  className={`${addBgColor(item.nextPurchase)} item-wrapper`}
+                >
+                  <div className="left-list-pane checkbox">
                     <input
                       type="checkbox"
                       id={item.itemName}
@@ -151,7 +175,9 @@ const ListItem = () => {
                     />
                   </div>
                   <div className="right-list-pane">
-                    <p>{item.itemName}</p>
+                    <p aria-label={addAriaLabel(item.nextPurchase)}>
+                      {item.itemName}
+                    </p>
                   </div>
                 </div>
               );
