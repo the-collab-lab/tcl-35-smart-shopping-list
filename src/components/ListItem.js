@@ -101,18 +101,21 @@ const ListItem = () => {
             searchListHandler({ value: searchlist, items }).map((item) => {
               return (
                 <div key={item.itemName} className="item-wrapper">
-                  <div className="left-list-pane">
-                    <input
-                      type="checkbox"
-                      id={item.itemName}
-                      disabled={handlePurchaseInLastDay(item.lastPurchase)}
-                      checked={handlePurchaseInLastDay(item.lastPurchase)}
-                      onChange={() => handleOnChange(item.itemName)}
-                    />
-                  </div>
-                  <div className="right-list-pane">
-                    <p>{item.itemName}</p>
-                  </div>
+                  {
+                    <div className="right-list-pane">
+                      <div className="item-name-wrapper">
+                        <input
+                          type="checkbox"
+                          id={item.itemName}
+                          disabled={handlePurchaseInLastDay(item.lastPurchase)}
+                          checked={handlePurchaseInLastDay(item.lastPurchase)}
+                          onChange={() => handleOnChange(item.itemName)}
+                        />
+                        <p className="item-name">{item.itemName}</p>
+                      </div>
+                      <button className="delete-list">Delete</button>
+                    </div>
+                  }
                 </div>
               );
             })}
