@@ -111,11 +111,11 @@ const ListItem = () => {
 
   const sortItems = (items) => {
     return items.sort((a, b) => {
-      if (!a.estimatedPurchaseInterval || !calculateActive) {
+      if (!a.estimatedPurchaseInterval && !calculateActive) {
         return -1;
       }
 
-      if (!b.estimatedPurchaseInterval || !calculateActive) {
+      if (!b.estimatedPurchaseInterval && !calculateActive) {
         return -1;
       }
 
