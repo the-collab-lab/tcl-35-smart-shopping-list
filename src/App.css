@@ -156,3 +156,12 @@ a {
   height: 40px;
   width: 100%;
 }
+
+.delete-list {
+  background-color: #f5683e;
+  border-radius: 6px;
+  border-color: #f5683e;
+  padding: 5px 10px;
+  cursor: pointer;
+  color: #fff;
+}

@@ -76,6 +76,18 @@ const ListItem = () => {
     setItems(items);
   };
 
+  //delete items from list
+
+  const handleDeleteList = (itemName) => {
+    let confirm = window.confirm('Are you sure you want to delete the list?');
+    if (confirm) {
+      const removedItems = items.filter((item) => {
+        return item.itemName !== itemName;
+      });
+      setItems(removedItems);
+    } else setItems(items);
+  };
+
   return (
     <div>
       <div id="main-container" className="flex-wrapper">
@@ -113,7 +125,12 @@ const ListItem = () => {
                         />
                         <p className="item-name">{item.itemName}</p>
                       </div>
-                      <button className="delete-list">Delete</button>
+                      <button
+                        className="delete-list"
+                        onClick={() => handleDeleteList(item.itemName)}
+                      >
+                        Delete
+                      </button>
                     </div>
                   }
                 </div>
