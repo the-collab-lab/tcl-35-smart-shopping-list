@@ -18,13 +18,13 @@ const ListItem = () => {
   let currentCollectionRef;
   const itemsCollectionRef = collection(db, 'shopping-list');
   const history = useHistory();
+  const DayInMilliSeconds = 60 * 60 * 24 * 1000;
 
   if (currToken) {
     currentCollectionRef = doc(db, 'shopping-list', currToken);
   }
 
   //route to list
-
   const addItemBtn = () => {
     history.push('/add');
   };
@@ -52,7 +52,6 @@ const ListItem = () => {
 
   const handlePurchaseInLastDay = (lastPurchase) => {
     if (!lastPurchase) return false;
-    const DayInMilliSeconds = 60 * 60 * 24 * 1000;
     return Date.now() - lastPurchase < DayInMilliSeconds;
   };
 
@@ -60,7 +59,7 @@ const ListItem = () => {
     for (let item of items) {
       if (item.itemName === itemName) {
         const daysSinceLastTransaction = item.lastPurchase
-          ? Math.round((Date.now() - item.lastPurchase) / 1000 / 60 / 60 / 24)
+          ? Math.round((Date.now() - item.lastPurchase) / DayInMilliSeconds)
           : 0;
         item.estimatedPurchaseInterval = calculateEstimate(
           item.estimatedPurchaseInterval,
@@ -111,18 +110,18 @@ const ListItem = () => {
 
   const sortItems = (items) => {
     return items.sort((a, b) => {
-      if (checkForInactive(a)) {
+      if (!a.estimatedPurchaseInterval) {
         return -1;
       }
 
-      if (checkForInactive(b)) {
+      if (!b.estimatedPurchaseInterval) {
         return -1;
       }
 
       if (a.estimatedPurchaseInterval < b.estimatedPurchaseInterval) {
-        return 1;
-      } else if (a.estimatedPurchaseInterval > b.estimatedPurchaseInterval) {
         return -1;
+      } else if (a.estimatedPurchaseInterval > b.estimatedPurchaseInterval) {
+        return 1;
       } else {
         if (a.itemName < b.itemName) {
           return -1;
