@@ -118,11 +118,12 @@ const AddItem = () => {
 
   return (
     <div id="main-container" className="add-items">
+      <h1>What To Buy</h1>
       <form id="sub-wrapper" onSubmit={handleClick}>
         <div className="form-item">
           {hasError && <p className="error"> {errors} </p>}
 
-          <label htmlFor="itemName">What do you want to buy: </label>
+          <label htmlFor="itemName">I want to buy: </label>
           <input
             type="text"
             placeholder="Bread"
@@ -135,32 +136,48 @@ const AddItem = () => {
         </div>
 
         <div className="form-item">
-          <p>How soon do you want to buy your item?</p>
-          <input
-            type="radio"
-            name="timeToBuy"
-            id="soon"
-            value="soon"
-            onChange={handleValueChange}
-            checked
-          />
-          <label htmlFor="soon">Soon</label>
-          <input
-            type="radio"
-            name="timeToBuy"
-            id="kindOfSoon"
-            value="Kind of soon"
-            onChange={handleValueChange}
-          />
-          <label htmlFor="kindOfSoon">Kind of Soon</label>
-          <input
-            type="radio"
-            name="timeToBuy"
-            id="notSoon"
-            value="Not soon"
-            onChange={handleValueChange}
-          />
-          <label htmlFor="notSoon">Not Soon</label>
+          <fieldset>
+            <legend>How soon?</legend>
+            <div className="radio-wrapper">
+              <div className="radio">
+                <label htmlFor="soon" className="radio-label">
+                  Soon
+                </label>
+                <input
+                  type="radio"
+                  name="timeToBuy"
+                  id="soon"
+                  value="soon"
+                  onChange={handleValueChange}
+                  checked
+                />
+              </div>
+              <div className="radio">
+                <label htmlFor="kindOfSoon" className="radio-label">
+                  Kind of Soon
+                </label>
+                <input
+                  type="radio"
+                  name="timeToBuy"
+                  id="kindOfSoon"
+                  value="Kind of soon"
+                  onChange={handleValueChange}
+                />
+              </div>
+              <div className="radio">
+                <label htmlFor="notSoon" className="radio-label">
+                  Not Soon
+                </label>
+                <input
+                  type="radio"
+                  name="timeToBuy"
+                  id="notSoon"
+                  value="Not soon"
+                  onChange={handleValueChange}
+                />
+              </div>
+            </div>
+          </fieldset>
         </div>
 
         <button id="submit" className="form-item">

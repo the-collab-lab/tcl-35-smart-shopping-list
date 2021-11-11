@@ -111,11 +111,7 @@ const ListItem = () => {
 
   const sortItems = (items) => {
     return items.sort((a, b) => {
-      if (!a.estimatedPurchaseInterval && !calculateActive) {
-        return -1;
-      }
-
-      if (!b.estimatedPurchaseInterval && !calculateActive) {
+      if (!calculateActive) {
         return -1;
       }
 
@@ -147,7 +143,7 @@ const ListItem = () => {
     <div>
       <div id="main-container" className="flex-wrapper">
         <div id="sub-wrapper">
-          <h2>Names of Items in your shopping List</h2>
+          <h1>Shopping List</h1>
           {loading && <p>Loading ... </p>}
           {error && <p>An error occured</p>}
           {emptyList && <p>You don't have any list yet</p>}
@@ -159,6 +155,7 @@ const ListItem = () => {
             <br />
             <input
               type="search"
+              id="search"
               placeholder="start typing here..."
               name="searchlist"
               className="search"
