@@ -69,6 +69,7 @@ const Home = () => {
             <label htmlFor="token">Share token</label>
             <br />
             <input
+              id="token"
               placeholder="three word token"
               type="text"
               name="joinlist"
