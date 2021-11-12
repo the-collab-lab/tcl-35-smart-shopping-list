@@ -137,6 +137,11 @@ a {
   display: flex;
 }
 
+.hide-span {
+  opacity: 0;
+  position: absolute;
+}
+
 #itemName {
   height: 1.5rem;
 }

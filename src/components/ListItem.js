@@ -85,13 +85,13 @@ const ListItem = () => {
     }
   };
 
-  const addAriaLabel = (nextPurchase) => {
-    if (nextPurchase === 7) {
-      return '7 days';
-    } else if (nextPurchase === 14) {
-      return '14 days';
-    } else {
-      return '30 days';
+  const addAriaLabel = (nextPurchase, itemName) => {
+    if (itemName && nextPurchase === 7) {
+      return `Buy ${itemName} every ${nextPurchase}} days`;
+    } else if (itemName && nextPurchase === 14) {
+      return `Buy ${itemName} every ${nextPurchase}} days`;
+    } else if (itemName && nextPurchase === 30) {
+      return `Buy ${itemName} every ${nextPurchase}} days`;
     }
   };
 
@@ -171,6 +171,17 @@ const ListItem = () => {
                   className={`${addBgColor(item.nextPurchase)} item-wrapper`}
                 >
                   <div className="left-list-pane checkbox">
+                    <label htmlFor={item.itemName}>
+                      <span
+                        className="hide-span"
+                        aria-label={addAriaLabel(
+                          item.nextPurchase,
+                          item.itemName,
+                        )}
+                      >
+                        {item.itemName}
+                      </span>
+                    </label>
                     <input
                       type="checkbox"
                       id={item.itemName}
@@ -180,9 +191,7 @@ const ListItem = () => {
                     />
                   </div>
                   <div className="right-list-pane">
-                    <p aria-label={addAriaLabel(item.nextPurchase)}>
-                      {item.itemName}
-                    </p>
+                    <p>{item.itemName}</p>
                   </div>
                 </div>
               );
