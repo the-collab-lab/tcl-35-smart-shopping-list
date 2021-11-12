@@ -5,7 +5,7 @@ import { NavLink } from 'react-router-dom';
 import { collection, doc, onSnapshot, updateDoc } from 'firebase/firestore';
 import Footer from './Footer';
 import { useHistory } from 'react-router-dom';
-import { searchListHandler } from './customFilter/customFilter.js';
+import { searchListHandler } from './customFilter.js';
 
 const ListItem = () => {
   const [items, setItems] = useState([]);
@@ -85,6 +85,7 @@ const ListItem = () => {
         return item.itemName !== itemName;
       });
       setItems(removedItems);
+      updateDoc(currentCollectionRef, { items: removedItems });
     } else setItems(items);
   };
 
