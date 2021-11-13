@@ -76,7 +76,7 @@ const ListItem = () => {
     setItems(items);
   };
 
-  //delete items from list
+  //delete items from shopping list
 
   const handleDeleteList = (itemName) => {
     let confirm = window.confirm('Are you sure you want to delete the list?');
