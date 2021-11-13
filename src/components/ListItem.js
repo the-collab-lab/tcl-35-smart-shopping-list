@@ -79,13 +79,15 @@ const ListItem = () => {
   //delete items from shopping list
 
   const handleDeleteList = (itemName) => {
-    let confirm = window.confirm('Are you sure you want to delete the list?');
+    let confirm = window.confirm(
+      'Are you sure you want to delete this item from the list?',
+    );
     if (confirm) {
-      const removedItems = items.filter((item) => {
+      const remainingItems = items.filter((item) => {
         return item.itemName !== itemName;
       });
-      setItems(removedItems);
-      updateDoc(currentCollectionRef, { items: removedItems });
+      setItems(remainingItems);
+      updateDoc(currentCollectionRef, { items: remainingItems });
     } else setItems(items);
   };
 
