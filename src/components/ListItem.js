@@ -86,7 +86,7 @@ const ListItem = () => {
       });
       setItems(removedItems);
       updateDoc(currentCollectionRef, { items: removedItems });
-    } else setItems(items);
+    }
   };
 
   return (
