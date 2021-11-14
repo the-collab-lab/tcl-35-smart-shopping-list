@@ -75,23 +75,25 @@ const ListItem = () => {
     setItems(items);
   };
 
-  const addBgColor = (nextPurchase) => {
-    if (nextPurchase === 7) {
+  const addBgColor = (nextPurchase, totalPurchases) => {
+    if (totalPurchases <= 1) {
+      return 'red-bg';
+    } else if (nextPurchase === 7) {
       return 'green-bg';
     } else if (nextPurchase === 14) {
       return 'yellow-bg';
-    } else {
+    } else if (nextPurchase === 30) {
       return 'purple-bg';
     }
   };
 
   const addAriaLabel = (nextPurchase, itemName) => {
     if (itemName && nextPurchase === 7) {
-      return `Buy ${itemName} every ${nextPurchase}} days`;
+      return `Buy ${itemName} every ${nextPurchase} days`;
     } else if (itemName && nextPurchase === 14) {
-      return `Buy ${itemName} every ${nextPurchase}} days`;
+      return `Buy ${itemName} every ${nextPurchase} days`;
     } else if (itemName && nextPurchase === 30) {
-      return `Buy ${itemName} every ${nextPurchase}} days`;
+      return `Buy ${itemName} every ${nextPurchase} days`;
     }
   };
 
@@ -102,36 +104,40 @@ const ListItem = () => {
       return false;
     } else {
       return (
-        ((Date.now() - item.lastPurchase) / item.estimatedPurchaseInterval) *
-          DaysInMilliSeconds >
+        (Date.now() - item.lastPurchase) /
+          (item.estimatedPurchaseInterval * DaysInMilliSeconds) <
         2
       );
     }
   };
 
+  const compareNames = (a, b) => {
+    if (a.itemName < b.itemName) {
+      return 1;
+    } else {
+      return -1;
+    }
+  };
+
   const sortItems = (items) => {
     return items.sort((a, b) => {
-      if (!calculateActive) {
-        return -1;
-      }
-
-      if (!a.estimatedPurchaseInterval && !b.estimatedPurchaseInterval) {
-        if (a.itemName < b.itemName) {
+      if (calculateActive(a) && calculateActive(b)) {
+        if (a.estimatedPurchaseInterval < b.estimatedPurchaseInterval) {
           return -1;
-        } else {
+        } else if (a.estimatedPurchaseInterval > b.estimatedPurchaseInterval) {
           return 1;
+        } else {
+          return compareNames(a, b);
         }
-      }
-
-      if (a.estimatedPurchaseInterval < b.estimatedPurchaseInterval) {
-        return -1;
-      } else if (a.estimatedPurchaseInterval > b.estimatedPurchaseInterval) {
-        return 1;
       } else {
-        if (a.itemName < b.itemName) {
+        if (!calculateActive(a)) {
           return -1;
-        } else {
-          return 1;
+        }
+        if (!calculateActive(b)) {
+          return -1;
+        }
+        if (!calculateActive(a) && !calculateActive(b)) {
+          return compareNames(a, b);
         }
       }
     });
@@ -168,7 +174,10 @@ const ListItem = () => {
               return (
                 <div
                   key={item.itemName}
-                  className={`${addBgColor(item.nextPurchase)} item-wrapper`}
+                  className={`${addBgColor(
+                    item.nextPurchase,
+                    item.totalPurchases,
+                  )} item-wrapper`}
                 >
                   <div className="left-list-pane checkbox">
                     <label htmlFor={item.itemName}>
