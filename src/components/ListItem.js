@@ -98,7 +98,7 @@ const ListItem = () => {
   };
 
   const calculateActive = (item) => {
-    if (item.totalPurchases <= 1) {
+    if (!item.estimatedPurchaseInterval) {
       return false;
     } else {
       return (
@@ -119,24 +119,27 @@ const ListItem = () => {
 
   const sortItems = (items) => {
     return items.sort((a, b) => {
-      if (calculateActive(a) && calculateActive(b)) {
-        if (a.estimatedPurchaseInterval < b.estimatedPurchaseInterval) {
-          return -1;
-        } else if (a.estimatedPurchaseInterval > b.estimatedPurchaseInterval) {
-          return 1;
-        } else {
-          return compareNames(a, b);
-        }
+      if (
+        a.estimatedPurchaseInterval < b.estimatedPurchaseInterval &&
+        a.estimatedPurchaseInterval > 0
+      ) {
+        return -1;
+      } else if (
+        a.estimatedPurchaseInterval > b.estimatedPurchaseInterval &&
+        b.estimatedPurchaseInterval > 0
+      ) {
+        return 1;
       } else {
-        if (!calculateActive(a) && !calculateActive(b)) {
+        if (!calculateActive(b) && !calculateActive(a)) {
           return compareNames(a, b);
         }
         if (!calculateActive(a)) {
-          return -1;
+          return 1;
         }
         if (!calculateActive(b)) {
-          return -1;
+          return 1;
         }
+        return compareNames(a, b);
       }
     });
   };
