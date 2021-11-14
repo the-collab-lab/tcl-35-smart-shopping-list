@@ -75,24 +75,44 @@ const ListItem = () => {
     setItems(items);
   };
 
-  const addBgColor = (nextPurchase, totalPurchases) => {
-    if (totalPurchases <= 1) {
+  const addBgColor = (nextPurchase, lastPurchase) => {
+    const countDownPurchaseInMS =
+      (Date.now() - lastPurchase) * DayInMilliSeconds;
+
+    if (countDownPurchaseInMS > countDownPurchaseInMS * 2) {
       return 'red-bg';
-    } else if (nextPurchase === 7) {
+    } else if (
+      nextPurchase === 7 &&
+      countDownPurchaseInMS < countDownPurchaseInMS * 7
+    ) {
       return 'green-bg';
-    } else if (nextPurchase === 14) {
+    } else if (
+      nextPurchase === 14 &&
+      countDownPurchaseInMS < countDownPurchaseInMS * 30
+    ) {
       return 'yellow-bg';
-    } else if (nextPurchase === 30) {
+    } else {
       return 'purple-bg';
     }
   };
 
-  const addAriaLabel = (nextPurchase, itemName) => {
-    if (itemName && nextPurchase === 7) {
+  const addAriaLabel = (nextPurchase, lastPurchase, itemName) => {
+    const countDownPurchaseInMS =
+      (Date.now() - lastPurchase) * DayInMilliSeconds;
+
+    if (countDownPurchaseInMS > countDownPurchaseInMS * 2) {
+      return `${itemName} is no longer active.`;
+    } else if (
+      nextPurchase === 7 &&
+      countDownPurchaseInMS < countDownPurchaseInMS * 7
+    ) {
       return `Buy ${itemName} every ${nextPurchase} days`;
-    } else if (itemName && nextPurchase === 14) {
+    } else if (
+      nextPurchase === 14 &&
+      countDownPurchaseInMS < countDownPurchaseInMS * 30
+    ) {
       return `Buy ${itemName} every ${nextPurchase} days`;
-    } else if (itemName && nextPurchase === 30) {
+    } else {
       return `Buy ${itemName} every ${nextPurchase} days`;
     }
   };
@@ -177,7 +197,7 @@ const ListItem = () => {
                   key={item.itemName}
                   className={`${addBgColor(
                     item.nextPurchase,
-                    item.totalPurchases,
+                    item.lastPurchase,
                   )} item-wrapper`}
                 >
                   <div className="left-list-pane checkbox">
@@ -186,6 +206,7 @@ const ListItem = () => {
                         className="hide-span"
                         aria-label={addAriaLabel(
                           item.nextPurchase,
+                          item.lastPurchase,
                           item.itemName,
                         )}
                       >
