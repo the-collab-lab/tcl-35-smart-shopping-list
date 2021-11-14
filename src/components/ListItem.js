@@ -97,15 +97,13 @@ const ListItem = () => {
     }
   };
 
-  const DaysInMilliSeconds = 60 * 60 * 24 * 1000;
-
   const calculateActive = (item) => {
     if (item.totalPurchases <= 1) {
       return false;
     } else {
       return (
         (Date.now() - item.lastPurchase) /
-          (item.estimatedPurchaseInterval * DaysInMilliSeconds) <
+          (item.estimatedPurchaseInterval * DayInMilliSeconds) <
         2
       );
     }
