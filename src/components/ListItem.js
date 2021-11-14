@@ -111,9 +111,9 @@ const ListItem = () => {
 
   const compareNames = (a, b) => {
     if (a.itemName < b.itemName) {
-      return 1;
-    } else {
       return -1;
+    } else {
+      return 1;
     }
   };
 
@@ -128,14 +128,14 @@ const ListItem = () => {
           return compareNames(a, b);
         }
       } else {
+        if (!calculateActive(a) && !calculateActive(b)) {
+          return compareNames(a, b);
+        }
         if (!calculateActive(a)) {
           return -1;
         }
         if (!calculateActive(b)) {
           return -1;
-        }
-        if (!calculateActive(a) && !calculateActive(b)) {
-          return compareNames(a, b);
         }
       }
     });
