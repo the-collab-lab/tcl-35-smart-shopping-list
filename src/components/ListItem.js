@@ -5,8 +5,7 @@ import { NavLink } from 'react-router-dom';
 import { collection, doc, onSnapshot, updateDoc } from 'firebase/firestore';
 import Footer from './Footer';
 import { useHistory } from 'react-router-dom';
-import { searchListHandler } from './customFilter/customFilter.js';
-import { check } from 'prettier';
+import { searchListHandler } from './customFilter.js';
 
 const ListItem = () => {
   const [items, setItems] = useState([]);
@@ -137,16 +136,17 @@ const ListItem = () => {
     }
   };
 
+  // Sorting
   const sortItems = (items) => {
     return items.sort((a, b) => {
       if (
         a.estimatedPurchaseInterval < b.estimatedPurchaseInterval &&
-        a.estimatedPurchaseInterval > 0
+        calculateActive(a)
       ) {
         return -1;
       } else if (
         a.estimatedPurchaseInterval > b.estimatedPurchaseInterval &&
-        b.estimatedPurchaseInterval > 0
+        calculateActive(b)
       ) {
         return 1;
       } else {
@@ -165,6 +165,21 @@ const ListItem = () => {
   };
 
   sortItems(items);
+
+  //delete items from shopping list
+
+  const handleDeleteList = (itemName) => {
+    let confirm = window.confirm(
+      'Are you sure you want to delete this item from the list?',
+    );
+    if (confirm) {
+      const remainingItems = items.filter((item) => {
+        return item.itemName !== itemName;
+      });
+      setItems(remainingItems);
+      updateDoc(currentCollectionRef, { items: remainingItems });
+    }
+  };
 
   return (
     <div>
@@ -223,6 +238,30 @@ const ListItem = () => {
                   </div>
                   <div className="right-list-pane">
                     <p>{item.itemName}</p>
+                  </div>
+                  <div key={item.itemName} className="item-wrapper">
+                    {
+                      <div className="right-list-pane">
+                        <div className="item-name-wrapper">
+                          <input
+                            type="checkbox"
+                            id={item.itemName}
+                            disabled={handlePurchaseInLastDay(
+                              item.lastPurchase,
+                            )}
+                            checked={handlePurchaseInLastDay(item.lastPurchase)}
+                            onChange={() => handleOnChange(item.itemName)}
+                          />
+                          <p className="item-name">{item.itemName}</p>
+                        </div>
+                        <button
+                          className="delete-list"
+                          onClick={() => handleDeleteList(item.itemName)}
+                        >
+                          Delete
+                        </button>
+                      </div>
+                    }
                   </div>
                 </div>
               );
