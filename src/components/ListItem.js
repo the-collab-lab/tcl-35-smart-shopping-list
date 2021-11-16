@@ -121,12 +121,12 @@ const ListItem = () => {
     return items.sort((a, b) => {
       if (
         a.estimatedPurchaseInterval < b.estimatedPurchaseInterval &&
-        a.estimatedPurchaseInterval > 0
+        calculateActive(a)
       ) {
         return -1;
       } else if (
         a.estimatedPurchaseInterval > b.estimatedPurchaseInterval &&
-        b.estimatedPurchaseInterval > 0
+        calculateActive(b)
       ) {
         return 1;
       } else {
