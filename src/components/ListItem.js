@@ -117,6 +117,7 @@ const ListItem = () => {
     }
   };
 
+  // Sorting
   const sortItems = (items) => {
     return items.sort((a, b) => {
       if (
