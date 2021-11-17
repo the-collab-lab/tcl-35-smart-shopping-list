@@ -74,15 +74,25 @@ const ListItem = () => {
     setItems(items);
   };
 
-  const addBgColor = (nextPurchase, totalPurchases) => {
-    if (totalPurchases <= 1) {
+  const addBgColor = (
+    estimatedPurchaseInterval,
+    lastPurchase,
+    nextPurchase,
+    totalPurchases,
+  ) => {
+    const ratio =
+      (Date.now() - lastPurchase) /
+      (estimatedPurchaseInterval * DayInMilliSeconds);
+    if (totalPurchases === 1 || (ratio > 2 && estimatedPurchaseInterval)) {
       return 'red-bg';
-    } else if (nextPurchase === 7) {
-      return 'green-bg';
-    } else if (nextPurchase === 14) {
-      return 'yellow-bg';
-    } else if (nextPurchase === 30) {
-      return 'purple-bg';
+    } else {
+      if (nextPurchase === 7) {
+        return 'green-bg';
+      } else if (nextPurchase === 14) {
+        return 'yellow-bg';
+      } else if (nextPurchase === 30) {
+        return 'purple-bg';
+      }
     }
   };
 
@@ -97,8 +107,10 @@ const ListItem = () => {
   };
 
   const calculateActive = (item) => {
-    if (!item.estimatedPurchaseInterval) {
+    if (item.totalPurchases === 1) {
       return false;
+    } else if (!item.estimatedPurchaseInterval) {
+      return true;
     } else {
       return (
         (Date.now() - item.lastPurchase) /
@@ -108,39 +120,35 @@ const ListItem = () => {
     }
   };
 
-  const compareNames = (a, b) => {
-    if (a.itemName < b.itemName) {
+  const sortByName = (a, b) => {
+    console.log(a.itemName, b.itemName);
+    if (a.itemName.toLowerCase() < b.itemName.toLowerCase()) {
       return -1;
     } else {
       return 1;
     }
   };
 
-  // Sorting
+  const sortByEstimatedPurchaseInterval = (a, b) => {
+    console.log(a.estimatedPurchaseInterval, b.estimatedPurchaseInterval);
+    if (a.estimatedPurchaseInterval < b.estimatedPurchaseInterval) {
+      return -1;
+    } else if (a.estimatedPurchaseInterval > b.estimatedPurchaseInterval) {
+      return 1;
+    } else {
+      return sortByName(a, b);
+    }
+  };
+
   const sortItems = (items) => {
     return items.sort((a, b) => {
-      if (
-        a.estimatedPurchaseInterval < b.estimatedPurchaseInterval &&
-        calculateActive(a)
-      ) {
+      if (calculateActive(a) && !calculateActive(b)) {
         return -1;
-      } else if (
-        a.estimatedPurchaseInterval > b.estimatedPurchaseInterval &&
-        calculateActive(b)
-      ) {
+      } else if (!calculateActive(a) && calculateActive(b)) {
         return 1;
-      } else {
-        if (!calculateActive(b) && !calculateActive(a)) {
-          return compareNames(a, b);
-        }
-        if (!calculateActive(a)) {
-          return 1;
-        }
-        if (!calculateActive(b)) {
-          return 1;
-        }
-        return compareNames(a, b);
       }
+
+      return sortByEstimatedPurchaseInterval(a, b);
     });
   };
 
@@ -191,6 +199,8 @@ const ListItem = () => {
                 <div
                   key={item.itemName}
                   className={`${addBgColor(
+                    item.estimatedPurchaseInterval,
+                    item.lastPurchase,
                     item.nextPurchase,
                     item.totalPurchases,
                   )} item-wrapper`}
@@ -231,7 +241,12 @@ const ListItem = () => {
                             checked={handlePurchaseInLastDay(item.lastPurchase)}
                             onChange={() => handleOnChange(item.itemName)}
                           />
-                          <p className="item-name">{item.itemName}</p>
+                          <p className="item-name">
+                            estimatedPurchaseInterval:{' '}
+                            {item.estimatedPurchaseInterval} nextPurchase:{' '}
+                            {item.nextPurchase} totalPurchases:{' '}
+                            {item.totalPurchases}
+                          </p>
                         </div>
                         <button
                           className="delete-list"
