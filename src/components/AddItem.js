@@ -138,45 +138,31 @@ const AddItem = () => {
         <div className="form-item">
           <fieldset>
             <legend>How soon?</legend>
-            <div className="radio-wrapper">
-              <div className="radio">
-                <label htmlFor="soon" className="radio-label">
-                  Soon
-                </label>
-                <input
-                  type="radio"
-                  name="timeToBuy"
-                  id="soon"
-                  value="soon"
-                  onChange={handleValueChange}
-                  checked
-                />
-              </div>
-              <div className="radio">
-                <label htmlFor="kindOfSoon" className="radio-label">
-                  Kind of Soon
-                </label>
-                <input
-                  type="radio"
-                  name="timeToBuy"
-                  id="kindOfSoon"
-                  value="Kind of soon"
-                  onChange={handleValueChange}
-                />
-              </div>
-              <div className="radio">
-                <label htmlFor="notSoon" className="radio-label">
-                  Not Soon
-                </label>
-                <input
-                  type="radio"
-                  name="timeToBuy"
-                  id="notSoon"
-                  value="Not soon"
-                  onChange={handleValueChange}
-                />
-              </div>
-            </div>
+            <input
+              type="radio"
+              name="timeToBuy"
+              id="soon"
+              value="soon"
+              onChange={handleValueChange}
+              checked
+            />
+            <label htmlFor="soon">Soon</label>
+            <input
+              type="radio"
+              name="timeToBuy"
+              id="kindOfSoon"
+              value="Kind of soon"
+              onChange={handleValueChange}
+            />
+            <label htmlFor="kindOfSoon">Kind of Soon</label>
+            <input
+              type="radio"
+              name="timeToBuy"
+              id="notSoon"
+              value="Not soon"
+              onChange={handleValueChange}
+            />
+            <label htmlFor="notSoon">Not Soon</label>
           </fieldset>
         </div>
 
