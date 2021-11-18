@@ -1,7 +1,6 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
 import { db } from '../lib/firebase';
-import { NavLink } from 'react-router-dom';
 import {
   collection,
   doc,
@@ -12,14 +11,16 @@ import {
   onSnapshot,
 } from '@firebase/firestore';
 import Footer from './Footer';
+// import { validateInput } from './Validation';
 
 const AddItem = () => {
   const [items, setItems] = useState([]);
   const [itemName, setItemName] = useState('');
   const [nextPurchase, setNextPurchase] = useState(7);
-  const [lastPurchase, setLastPurchase] = useState(null);
+  const [lastPurchase] = useState(null);
   const [hasError, setHasError] = useState('false');
   const [errors, setErrors] = useState('');
+  const [newItem, setNewItem] = useState({});
 
   const errorsList = {
     empty: 'Make sure you add an item',
@@ -63,31 +64,33 @@ const AddItem = () => {
     const refData = await getDocs(itemsCollectionRef);
     let tokenList = refData.docs.map(({ id }) => id);
 
-    const newList = {
+    setNewItem({
       itemName,
       nextPurchase,
       lastPurchase,
       estimatedPurchaseInterval: null,
       totalPurchases: 0,
-    };
+    });
 
     if (tokenList.includes(currToken)) {
-      if (validateInput(newList)) {
+      if (validateInput(newItem)) {
         await updateDoc(doc(db, 'shopping-list', currToken), {
-          items: arrayUnion(newList),
+          items: arrayUnion(newItem),
         });
       } else {
         setHasError(true);
         setTimeout(() => setHasError(false), 3000);
       }
     } else {
-      if (validateInput(newList)) {
+      if (validateInput(newItem)) {
         await setDoc(doc(db, 'shopping-list', currToken), {
-          items: [newList],
+          items: [newItem],
         });
       }
     }
   };
+
+  // validateInput({newItem, setErrors, errorsList})
 
   const calculateNextPurchase = (purchaseTime) => {
     if (purchaseTime === 'Not soon') {

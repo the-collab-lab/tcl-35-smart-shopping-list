@@ -1,7 +1,7 @@
 import React from 'react';
 import { useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { getToken, words } from '@the-collab-lab/shopping-list-utils';
+import { getToken } from '@the-collab-lab/shopping-list-utils';
 import { db } from '../lib/firebase.js';
 import { collection, getDocs } from '@firebase/firestore';
 import Error from './Error';
@@ -10,7 +10,7 @@ const Home = () => {
   const [joinlist, setJoinList] = useState('');
   const [noSharedToken, setNoSharedToken] = useState(false);
   const [showErrorMessage, setShowErrorMessage] = useState(true);
-  const [token, setToken] = useState(() => {
+  const [token] = useState(() => {
     const existingToken = localStorage.getItem('currToken');
     return existingToken ? existingToken : '';
   });

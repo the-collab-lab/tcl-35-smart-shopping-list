@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { db } from '../lib/firebase.js';
 import { calculateEstimate } from '@the-collab-lab/shopping-list-utils';
-import { NavLink } from 'react-router-dom';
 import { collection, doc, onSnapshot, updateDoc } from 'firebase/firestore';
 import Footer from './Footer';
 import { useHistory } from 'react-router-dom';
 import { searchListHandler } from './customFilter.js';
+import { sortItems } from './Sort.js';
 
 const ListItem = () => {
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(false);
+  const [error] = useState(false);
   const [emptyList, setEmptyList] = useState(false);
   const [searchlist, setSearchList] = useState('');
 
@@ -50,6 +50,7 @@ const ListItem = () => {
     getItems();
   }, []);
 
+  // event handlers
   const handlePurchaseInLastDay = (lastPurchase) => {
     if (!lastPurchase) return false;
     return Date.now() - lastPurchase < DayInMilliSeconds;
@@ -74,6 +75,20 @@ const ListItem = () => {
     setItems(items);
   };
 
+  const handleDeleteList = (itemName) => {
+    let confirm = window.confirm(
+      'Are you sure you want to delete this item from the list?',
+    );
+    if (confirm) {
+      const remainingItems = items.filter((item) => {
+        return item.itemName !== itemName;
+      });
+      setItems(remainingItems);
+      updateDoc(currentCollectionRef, { items: remainingItems });
+    }
+  };
+
+  // apply colours
   const addBgColor = (
     estimatedPurchaseInterval,
     lastPurchase,
@@ -106,68 +121,8 @@ const ListItem = () => {
     }
   };
 
-  const calculateActive = (item) => {
-    if (item.totalPurchases === 1) {
-      return false;
-    } else if (!item.estimatedPurchaseInterval) {
-      return true;
-    } else {
-      return (
-        (Date.now() - item.lastPurchase) /
-          (item.estimatedPurchaseInterval * DayInMilliSeconds) <
-        2
-      );
-    }
-  };
-
-  const sortByName = (a, b) => {
-    console.log(a.itemName, b.itemName);
-    if (a.itemName.toLowerCase() < b.itemName.toLowerCase()) {
-      return -1;
-    } else {
-      return 1;
-    }
-  };
-
-  const sortByEstimatedPurchaseInterval = (a, b) => {
-    console.log(a.estimatedPurchaseInterval, b.estimatedPurchaseInterval);
-    if (a.estimatedPurchaseInterval < b.estimatedPurchaseInterval) {
-      return -1;
-    } else if (a.estimatedPurchaseInterval > b.estimatedPurchaseInterval) {
-      return 1;
-    } else {
-      return sortByName(a, b);
-    }
-  };
-
-  const sortItems = (items) => {
-    return items.sort((a, b) => {
-      if (calculateActive(a) && !calculateActive(b)) {
-        return -1;
-      } else if (!calculateActive(a) && calculateActive(b)) {
-        return 1;
-      }
-
-      return sortByEstimatedPurchaseInterval(a, b);
-    });
-  };
-
-  sortItems(items);
-
-  //delete items from shopping list
-
-  const handleDeleteList = (itemName) => {
-    let confirm = window.confirm(
-      'Are you sure you want to delete this item from the list?',
-    );
-    if (confirm) {
-      const remainingItems = items.filter((item) => {
-        return item.itemName !== itemName;
-      });
-      setItems(remainingItems);
-      updateDoc(currentCollectionRef, { items: remainingItems });
-    }
-  };
+  // sort items
+  sortItems({ items: items, ratio: DayInMilliSeconds });
 
   return (
     <div>
