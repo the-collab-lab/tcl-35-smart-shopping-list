@@ -96,23 +96,24 @@ const ListItem = () => {
     }
   };
 
-  const addAriaLabel = (nextPurchase, lastPurchase, itemName) => {
-    const countDownPurchaseInMS =
-      (Date.now() - lastPurchase) * DayInMilliSeconds;
+  const addAriaLabel = (
+    estimatedPurchaseInterval,
+    lastPurchase,
+    nextPurchase,
+    totalPurchases,
+    itemName,
+  ) => {
+    const ratio =
+      (Date.now() - lastPurchase) /
+      (estimatedPurchaseInterval * DayInMilliSeconds);
 
-    if (countDownPurchaseInMS > countDownPurchaseInMS * 2) {
+    if (totalPurchases === 1 || (ratio > 2 && estimatedPurchaseInterval)) {
       return `${itemName} is no longer active.`;
-    } else if (
-      nextPurchase === 7 &&
-      countDownPurchaseInMS < countDownPurchaseInMS * 7
-    ) {
+    } else if (nextPurchase === 7) {
       return `Buy ${itemName} every ${nextPurchase} days`;
-    } else if (
-      nextPurchase === 14 &&
-      countDownPurchaseInMS < countDownPurchaseInMS * 30
-    ) {
+    } else if (nextPurchase === 14) {
       return `Buy ${itemName} every ${nextPurchase} days`;
-    } else {
+    } else if (nextPurchase === 30) {
       return `Buy ${itemName} every ${nextPurchase} days`;
     }
   };
@@ -221,7 +222,10 @@ const ListItem = () => {
                       <span
                         className="hide-span"
                         aria-label={addAriaLabel(
+                          item.estimatedPurchaseInterval,
+                          item.lastPurchase,
                           item.nextPurchase,
+                          item.totalPurchase,
                           item.itemName,
                         )}
                       >
