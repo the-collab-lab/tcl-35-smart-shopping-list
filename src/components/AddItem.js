@@ -11,7 +11,7 @@ import {
   onSnapshot,
 } from '@firebase/firestore';
 import Footer from './Footer';
-// import { validateInput } from './Validation';
+import { validateInput } from './Validation';
 
 const AddItem = () => {
   const [items, setItems] = useState([]);
@@ -40,40 +40,12 @@ const AddItem = () => {
     getItems();
   }, []);
 
-  const cleanString = (str) => {
-    const regex = /[a-z]/g;
-    return str.trim().toLowerCase().match(regex).join('');
-  };
-
-  const validateInput = (list) => {
-    if (!list.itemName) {
-      setErrors(errorsList['empty']);
-      return false;
-    } else {
-      for (const item of items) {
-        if (cleanString(item.itemName) === cleanString(list.itemName)) {
-          setErrors(errorsList['duplicate']);
-          return false;
-        }
-      }
-    }
-    return true;
-  };
-
   const addItems = async () => {
     const refData = await getDocs(itemsCollectionRef);
     let tokenList = refData.docs.map(({ id }) => id);
 
-    setNewItem({
-      itemName,
-      nextPurchase,
-      lastPurchase,
-      estimatedPurchaseInterval: null,
-      totalPurchases: 0,
-    });
-
     if (tokenList.includes(currToken)) {
-      if (validateInput(newItem)) {
+      if (validateInput({ newItem, setErrors, errorsList, items })) {
         await updateDoc(doc(db, 'shopping-list', currToken), {
           items: arrayUnion(newItem),
         });
@@ -82,7 +54,7 @@ const AddItem = () => {
         setTimeout(() => setHasError(false), 3000);
       }
     } else {
-      if (validateInput(newItem)) {
+      if (validateInput({ newItem, setErrors, errorsList, items })) {
         await setDoc(doc(db, 'shopping-list', currToken), {
           items: [newItem],
         });
@@ -90,7 +62,9 @@ const AddItem = () => {
     }
   };
 
-  // validateInput({newItem, setErrors, errorsList})
+  useEffect(() => {
+    addItems();
+  }, [newItem]);
 
   const calculateNextPurchase = (purchaseTime) => {
     if (purchaseTime === 'Not soon') {
@@ -115,7 +89,14 @@ const AddItem = () => {
 
   const handleClick = (e) => {
     e.preventDefault();
-    addItems();
+    setNewItem({
+      itemName,
+      nextPurchase,
+      lastPurchase,
+      estimatedPurchaseInterval: null,
+      totalPurchases: 0,
+    });
+    // addItems();
     clearFormElements();
   };
 
@@ -141,45 +122,31 @@ const AddItem = () => {
         <div className="form-item">
           <fieldset>
             <legend>How soon?</legend>
-            <div className="radio-wrapper">
-              <div className="radio">
-                <label htmlFor="soon" className="radio-label">
-                  Soon
-                </label>
-                <input
-                  type="radio"
-                  name="timeToBuy"
-                  id="soon"
-                  value="soon"
-                  onChange={handleValueChange}
-                  checked
-                />
-              </div>
-              <div className="radio">
-                <label htmlFor="kindOfSoon" className="radio-label">
-                  Kind of Soon
-                </label>
-                <input
-                  type="radio"
-                  name="timeToBuy"
-                  id="kindOfSoon"
-                  value="Kind of soon"
-                  onChange={handleValueChange}
-                />
-              </div>
-              <div className="radio">
-                <label htmlFor="notSoon" className="radio-label">
-                  Not Soon
-                </label>
-                <input
-                  type="radio"
-                  name="timeToBuy"
-                  id="notSoon"
-                  value="Not soon"
-                  onChange={handleValueChange}
-                />
-              </div>
-            </div>
+            <input
+              type="radio"
+              name="timeToBuy"
+              id="soon"
+              value="soon"
+              onChange={handleValueChange}
+              checked
+            />
+            <label htmlFor="soon">Soon</label>
+            <input
+              type="radio"
+              name="timeToBuy"
+              id="kindOfSoon"
+              value="Kind of soon"
+              onChange={handleValueChange}
+            />
+            <label htmlFor="kindOfSoon">Kind of Soon</label>
+            <input
+              type="radio"
+              name="timeToBuy"
+              id="notSoon"
+              value="Not soon"
+              onChange={handleValueChange}
+            />
+            <label htmlFor="notSoon">Not Soon</label>
           </fieldset>
         </div>
 
