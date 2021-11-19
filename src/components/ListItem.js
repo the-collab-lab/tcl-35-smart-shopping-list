@@ -5,7 +5,7 @@ import { collection, doc, onSnapshot, updateDoc } from 'firebase/firestore';
 import Footer from './Footer';
 import { useHistory } from 'react-router-dom';
 import { searchListHandler } from './customFilter.js';
-import { sortItems } from './Sort.js';
+import { SortItems } from './Sort.js';
 
 const ListItem = () => {
   const [items, setItems] = useState([]);
@@ -90,7 +90,8 @@ const ListItem = () => {
     }
   };
 
-  // apply colours
+  // Apply colours and aria labels
+
   const addBgColor = (
     estimatedPurchaseInterval,
     lastPurchase,
@@ -135,51 +136,8 @@ const ListItem = () => {
     }
   };
 
-  const calculateActive = (item) => {
-    if (item.totalPurchases === 1) {
-      return false;
-    } else if (!item.estimatedPurchaseInterval) {
-      return true;
-    } else {
-      return (
-        (Date.now() - item.lastPurchase) /
-          (item.estimatedPurchaseInterval * DayInMilliSeconds) <
-        2
-      );
-    }
-  };
-
-  const sortByName = (a, b) => {
-    if (a.itemName.toLowerCase() < b.itemName.toLowerCase()) {
-      return -1;
-    } else {
-      return 1;
-    }
-  };
-
-  const sortByEstimatedPurchaseInterval = (a, b) => {
-    if (a.estimatedPurchaseInterval < b.estimatedPurchaseInterval) {
-      return -1;
-    } else if (a.estimatedPurchaseInterval > b.estimatedPurchaseInterval) {
-      return 1;
-    } else {
-      return sortByName(a, b);
-    }
-  };
-
-  const sortItems = (items) => {
-    return items.sort((a, b) => {
-      if (calculateActive(a) && !calculateActive(b)) {
-        return -1;
-      } else if (!calculateActive(a) && calculateActive(b)) {
-        return 1;
-      }
-
-      return sortByEstimatedPurchaseInterval(a, b);
-    });
-  };
-
-  sortItems(items);
+  // Sort items
+  SortItems({ items });
 
   return (
     <div>

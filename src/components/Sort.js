@@ -1,4 +1,6 @@
-const calculateActive = (item, ratio) => {
+const DayInMilliSeconds = 60 * 60 * 24 * 1000;
+
+const calculateActive = (item) => {
   if (item.totalPurchases === 1) {
     return false;
   } else if (!item.estimatedPurchaseInterval) {
@@ -6,14 +8,13 @@ const calculateActive = (item, ratio) => {
   } else {
     return (
       (Date.now() - item.lastPurchase) /
-        (item.estimatedPurchaseInterval * ratio) <
+        (item.estimatedPurchaseInterval * DayInMilliSeconds) <
       2
     );
   }
 };
 
 const sortByName = (a, b) => {
-  console.log(a.itemName, b.itemName);
   if (a.itemName.toLowerCase() < b.itemName.toLowerCase()) {
     return -1;
   } else {
@@ -22,7 +23,6 @@ const sortByName = (a, b) => {
 };
 
 const sortByEstimatedPurchaseInterval = (a, b) => {
-  console.log(a.estimatedPurchaseInterval, b.estimatedPurchaseInterval);
   if (a.estimatedPurchaseInterval < b.estimatedPurchaseInterval) {
     return -1;
   } else if (a.estimatedPurchaseInterval > b.estimatedPurchaseInterval) {
@@ -32,16 +32,14 @@ const sortByEstimatedPurchaseInterval = (a, b) => {
   }
 };
 
-export const sortItems = ({ items, ratio }) => {
+export const SortItems = ({ items }) => {
   return items.sort((a, b) => {
-    if (calculateActive(a, ratio) && !calculateActive(b, ratio)) {
+    if (calculateActive(a) && !calculateActive(b)) {
       return -1;
-    } else if (!calculateActive(a, ratio) && calculateActive(b, ratio)) {
+    } else if (!calculateActive(a) && calculateActive(b)) {
       return 1;
     }
 
     return sortByEstimatedPurchaseInterval(a, b);
   });
 };
-
-// sortItems(items);
