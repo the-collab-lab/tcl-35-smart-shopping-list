@@ -133,7 +133,6 @@ const ListItem = () => {
   };
 
   const sortByName = (a, b) => {
-    console.log(a.itemName, b.itemName);
     if (a.itemName.toLowerCase() < b.itemName.toLowerCase()) {
       return -1;
     } else {
@@ -142,7 +141,6 @@ const ListItem = () => {
   };
 
   const sortByEstimatedPurchaseInterval = (a, b) => {
-    console.log(a.estimatedPurchaseInterval, b.estimatedPurchaseInterval);
     if (a.estimatedPurchaseInterval < b.estimatedPurchaseInterval) {
       return -1;
     } else if (a.estimatedPurchaseInterval > b.estimatedPurchaseInterval) {
@@ -240,12 +238,6 @@ const ListItem = () => {
                           onChange={() => handleOnChange(item.itemName)}
                         />
                         <p className="item-name">{item.itemName}</p>
-                        <p className="item-name">
-                          estimatedPurchaseInterval:{' '}
-                          {item.estimatedPurchaseInterval} nextPurchase:{' '}
-                          {item.nextPurchase} totalPurchases:{' '}
-                          {item.totalPurchases}
-                        </p>
                       </div>
                       <button
                         className="delete-list"
