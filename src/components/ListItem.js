@@ -191,9 +191,7 @@ const ListItem = () => {
           {emptyList && <p>You don't have any list yet</p>}
 
           <div className="filter">
-            <label htmlFor="search" className="search-label">
-              Filter items:
-            </label>
+            <label htmlFor="search">Filter items</label>
             <br />
             <input
               type="search"
@@ -214,64 +212,49 @@ const ListItem = () => {
                     item.estimatedPurchaseInterval,
                     item.lastPurchase,
                     item.nextPurchase,
-                    item.totalPurchase,
+                    item.totalPurchases,
                   )} item-wrapper`}
                 >
-                  <div className="left-list-pane checkbox">
-                    <label htmlFor={item.itemName}>
-                      <span
-                        className="hide-span"
-                        aria-label={addAriaLabel(
-                          item.estimatedPurchaseInterval,
-                          item.lastPurchase,
-                          item.nextPurchase,
-                          item.totalPurchase,
-                          item.itemName,
-                        )}
-                      >
-                        {item.itemName}
-                      </span>
-                    </label>
-                    <input
-                      type="checkbox"
-                      id={item.itemName}
-                      disabled={handlePurchaseInLastDay(item.lastPurchase)}
-                      checked={handlePurchaseInLastDay(item.lastPurchase)}
-                      onChange={() => handleOnChange(item.itemName)}
-                    />
-                  </div>
-                  <div className="right-list-pane">
-                    <p>{item.itemName}</p>
-                  </div>
-                  <div key={item.itemName} className="item-wrapper">
-                    {
-                      <div className="right-list-pane">
-                        <div className="item-name-wrapper">
-                          <input
-                            type="checkbox"
-                            id={item.itemName}
-                            disabled={handlePurchaseInLastDay(
+                  {
+                    <div className="right-list-pane">
+                      <div className="item-name-wrapper">
+                        <label htmlFor={item.itemName}>
+                          <span
+                            className="hide-span"
+                            aria-label={addAriaLabel(
+                              item.estimatedPurchaseInterval,
                               item.lastPurchase,
+                              item.nextPurchase,
+                              item.totalPurchases,
+                              item.itemName,
                             )}
-                            checked={handlePurchaseInLastDay(item.lastPurchase)}
-                            onChange={() => handleOnChange(item.itemName)}
-                          />
-                          <p className="item-name">
-                            estimatedPurchaseInterval:{' '}
-                            {item.estimatedPurchaseInterval} nextPurchase:{' '}
-                            {item.nextPurchase} totalPurchases:{' '}
-                            {item.totalPurchases}
-                          </p>
-                        </div>
-                        <button
-                          className="delete-list"
-                          onClick={() => handleDeleteList(item.itemName)}
-                        >
-                          Delete
-                        </button>
+                          >
+                            {item.itemName}
+                          </span>
+                        </label>
+                        <input
+                          type="checkbox"
+                          id={item.itemName}
+                          disabled={handlePurchaseInLastDay(item.lastPurchase)}
+                          checked={handlePurchaseInLastDay(item.lastPurchase)}
+                          onChange={() => handleOnChange(item.itemName)}
+                        />
+                        <p className="item-name">{item.itemName}</p>
+                        <p className="item-name">
+                          estimatedPurchaseInterval:{' '}
+                          {item.estimatedPurchaseInterval} nextPurchase:{' '}
+                          {item.nextPurchase} totalPurchases:{' '}
+                          {item.totalPurchases}
+                        </p>
                       </div>
-                    }
-                  </div>
+                      <button
+                        className="delete-list"
+                        onClick={() => handleDeleteList(item.itemName)}
+                      >
+                        Delete
+                      </button>
+                    </div>
+                  }
                 </div>
               );
             })}
