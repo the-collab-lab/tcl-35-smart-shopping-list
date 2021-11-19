@@ -196,12 +196,12 @@ const ListItem = () => {
                             checked={handlePurchaseInLastDay(item.lastPurchase)}
                             onChange={() => handleOnChange(item.itemName)}
                           />
-                          <p className="item-name">
+                          {/* <p className="item-name">
                             estimatedPurchaseInterval:{' '}
                             {item.estimatedPurchaseInterval} nextPurchase:{' '}
                             {item.nextPurchase} totalPurchases:{' '}
                             {item.totalPurchases}
-                          </p>
+                          </p> */}
                         </div>
                         <button
                           className="delete-list"
