@@ -3,13 +3,14 @@ const cleanString = (str) => {
   return str.trim().toLowerCase().match(regex).join('');
 };
 
-export const validateInput = ({ newItem, setErrors, errorsList, items }) => {
-  if (!newItem.itemName) {
+export const validateInput = ({ newList, setErrors, errorsList, items }) => {
+  console.log(newList, setErrors, errorsList, items);
+  if (!newList) {
     setErrors(errorsList['empty']);
     return false;
   } else {
     for (const item of items) {
-      if (cleanString(item.itemName) === cleanString(newItem.itemName)) {
+      if (cleanString(item.itemName) === cleanString(newList.itemName)) {
         setErrors(errorsList['duplicate']);
         return false;
       }

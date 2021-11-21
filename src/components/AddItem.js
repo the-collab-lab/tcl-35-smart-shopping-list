@@ -17,10 +17,9 @@ const AddItem = () => {
   const [items, setItems] = useState([]);
   const [itemName, setItemName] = useState('');
   const [nextPurchase, setNextPurchase] = useState(7);
-  const [lastPurchase] = useState(null);
+  const lastPurchase = null;
   const [hasError, setHasError] = useState('false');
   const [errors, setErrors] = useState('');
-  const [newItem, setNewItem] = useState({});
 
   const errorsList = {
     empty: 'Make sure you add an item',
@@ -44,27 +43,31 @@ const AddItem = () => {
     const refData = await getDocs(itemsCollectionRef);
     let tokenList = refData.docs.map(({ id }) => id);
 
+    const newList = {
+      itemName,
+      nextPurchase,
+      lastPurchase,
+      estimatedPurchaseInterval: null,
+      totalPurchases: 0,
+    };
+
     if (tokenList.includes(currToken)) {
-      if (validateInput({ newItem, setErrors, errorsList, items })) {
+      if (validateInput({ newList, setErrors, errorsList, items })) {
         await updateDoc(doc(db, 'shopping-list', currToken), {
-          items: arrayUnion(newItem),
+          items: arrayUnion(newList),
         });
       } else {
         setHasError(true);
         setTimeout(() => setHasError(false), 3000);
       }
     } else {
-      if (validateInput({ newItem, setErrors, errorsList, items })) {
+      if (validateInput({ newList, setErrors, errorsList, items })) {
         await setDoc(doc(db, 'shopping-list', currToken), {
-          items: [newItem],
+          items: [newList],
         });
       }
     }
   };
-
-  useEffect(() => {
-    addItems();
-  }, [newItem]);
 
   const calculateNextPurchase = (purchaseTime) => {
     if (purchaseTime === 'Not soon') {
@@ -89,14 +92,7 @@ const AddItem = () => {
 
   const handleClick = (e) => {
     e.preventDefault();
-    setNewItem({
-      itemName,
-      nextPurchase,
-      lastPurchase,
-      estimatedPurchaseInterval: null,
-      totalPurchases: 0,
-    });
-    // addItems();
+    addItems();
     clearFormElements();
   };
 

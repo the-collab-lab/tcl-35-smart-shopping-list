@@ -75,8 +75,6 @@ const ListItem = () => {
     setItems(items);
   };
 
-  //delete items from shopping list
-
   const handleDeleteList = (itemName) => {
     let confirm = window.confirm(
       'Are you sure you want to delete this item from the list?',
@@ -91,7 +89,6 @@ const ListItem = () => {
   };
 
   // Apply colours and aria labels
-
   const addBgColor = (
     estimatedPurchaseInterval,
     lastPurchase,
