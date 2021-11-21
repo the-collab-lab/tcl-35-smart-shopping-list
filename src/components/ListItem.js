@@ -6,6 +6,7 @@ import Footer from './Footer';
 import { useHistory } from 'react-router-dom';
 import { searchListHandler } from './customFilter.js';
 import { SortItems } from './Sort.js';
+import { addAriaLabelHelper, addBgColourHelper } from './Colours.js';
 
 const ListItem = () => {
   const [items, setItems] = useState([]);
@@ -89,48 +90,12 @@ const ListItem = () => {
   };
 
   // Apply colours and aria labels
-  const addBgColor = (
-    estimatedPurchaseInterval,
-    lastPurchase,
-    nextPurchase,
-    totalPurchases,
-  ) => {
-    const ratio =
-      (Date.now() - lastPurchase) /
-      (estimatedPurchaseInterval * DayInMilliSeconds);
-    if (totalPurchases === 1 || (ratio > 2 && estimatedPurchaseInterval)) {
-      return 'red-bg';
-    } else {
-      if (nextPurchase === 7) {
-        return 'green-bg';
-      } else if (nextPurchase === 14) {
-        return 'yellow-bg';
-      } else if (nextPurchase === 30) {
-        return 'purple-bg';
-      }
-    }
+  const addAriaLabel = (interval, last, next, total, name) => {
+    return addAriaLabelHelper({ interval, last, next, total, name });
   };
 
-  const addAriaLabel = (
-    estimatedPurchaseInterval,
-    lastPurchase,
-    nextPurchase,
-    totalPurchases,
-    itemName,
-  ) => {
-    const ratio =
-      (Date.now() - lastPurchase) /
-      (estimatedPurchaseInterval * DayInMilliSeconds);
-
-    if (totalPurchases === 1 || (ratio > 2 && estimatedPurchaseInterval)) {
-      return `${itemName} is no longer active.`;
-    } else if (nextPurchase === 7) {
-      return `Buy ${itemName} every ${nextPurchase} days`;
-    } else if (nextPurchase === 14) {
-      return `Buy ${itemName} every ${nextPurchase} days`;
-    } else if (nextPurchase === 30) {
-      return `Buy ${itemName} every ${nextPurchase} days`;
-    }
+  const addBgColor = (interval, last, next, total) => {
+    return addBgColourHelper({ interval, last, next, total });
   };
 
   // Sort items
