@@ -4,7 +4,6 @@ const cleanString = (str) => {
 };
 
 export const validateInput = ({ newList, setErrors, errorsList, items }) => {
-  console.log(newList, setErrors, errorsList, items);
   if (!newList) {
     setErrors(errorsList['empty']);
     return false;

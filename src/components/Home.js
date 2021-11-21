@@ -10,11 +10,8 @@ const Home = () => {
   const [joinlist, setJoinList] = useState('');
   const [noSharedToken, setNoSharedToken] = useState(false);
   const [showErrorMessage, setShowErrorMessage] = useState(true);
-  const [token] = useState(() => {
-    const existingToken = localStorage.getItem('currToken');
-    return existingToken ? existingToken : '';
-  });
-
+  const existingToken = localStorage.getItem('currToken');
+  let token = existingToken ? existingToken : '';
   const history = useHistory();
   const itemsCollectionRef = collection(db, 'shopping-list');
 
