@@ -2,6 +2,8 @@ import React from 'react';
 import AddItem from '../src/components/AddItem';
 import ListItem from '../src/components/ListItem';
 import Home from '../src/components/Home';
+
+import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 
 import {
@@ -16,7 +18,7 @@ function App() {
 
   return (
     <Router>
-      <div className="app container">
+      <div className="app">
         <Switch>
           <Route exact path="/">
             <Home />

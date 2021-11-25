@@ -6,6 +6,17 @@ import { db } from '../lib/firebase.js';
 import { collection, getDocs } from '@firebase/firestore';
 import Error from './Error';
 
+import shoppingIllustration from '../assets/undraw_shopping_app_flsj.svg';
+
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
+import InputGroup from 'react-bootstrap/InputGroup';
+import FormControl from 'react-bootstrap/FormControl';
+import Ratio from 'react-bootstrap/Ratio';
+
 const Home = () => {
   const [joinlist, setJoinList] = useState('');
   const [noSharedToken, setNoSharedToken] = useState(false);
@@ -51,36 +62,74 @@ const Home = () => {
   };
 
   return (
-    <header className="home-header">
-      <section className="welcome">
-        <h1>Welcome to your Smart Shopping list!</h1>
-      </section>
-      <section className="create">
-        <button onClick={() => handleClick()}>Create a new list</button>
-        <p>- or -</p>
-      </section>
-      <section className="join">
-        <p>Join an existing shopping list by entering a three word token.</p>
-        <form onSubmit={handleSubmit}>
-          <div>
-            <label htmlFor="token">Share token</label>
-            <br />
-            <input
-              id="token"
-              placeholder="three word token"
-              type="text"
-              name="joinlist"
-              value={joinlist}
-              onChange={handleChange}
-            />
-          </div>
-          {noSharedToken && showErrorMessage && (
-            <Error errorMessage="Token does not exist, enter a valid token" />
-          )}
-          <button>Join an existing list</button>
-        </form>
-      </section>
-    </header>
+    <Container fluid className="home-container">
+      <Row className="m-2 p-3">
+        <Col className="mx-auto d-block d-none d-sm-none d-md-block">
+          <header>
+            <Ratio aspectRatio={87}>
+              <img
+                src={shoppingIllustration}
+                alt="illustration of a woman with a cart"
+                fluid
+                className="mx-auto d-block"
+              />
+            </Ratio>
+          </header>
+        </Col>
+
+        <Col className="mx-auto d-block text-dark rounded">
+          <main>
+            <h1 className="text-center py-2 text-success">Smart Shopping</h1>
+            <section>
+              <h2 className="text-center py-3 h3">
+                Enter your three words token
+              </h2>
+              <Form onSubmit={handleSubmit}>
+                <Form.Group controlId="token" className="clearfix">
+                  <Form.Label aria-label="enter three words token">
+                    <span hidden aria-hidden="true">
+                      User Token
+                    </span>
+                  </Form.Label>
+                  <InputGroup>
+                    <InputGroup.Text>three words token</InputGroup.Text>
+                    <FormControl
+                      className="p-3"
+                      id="token"
+                      type="text"
+                      name="joinlist"
+                      value={joinlist}
+                      onChange={handleChange}
+                    />
+                  </InputGroup>
+                  {noSharedToken && showErrorMessage && (
+                    <Error errorMessage="Token does not exist, enter a valid token" />
+                  )}
+                </Form.Group>
+                <Button
+                  type="submit"
+                  variant="outline-success"
+                  className="btn w-100 p-3 mt-3"
+                >
+                  Join an existing list
+                </Button>
+              </Form>
+            </section>
+
+            <section className="py-3">
+              <h2 className="py-2 h3">Don't have a list?</h2>
+              <Button
+                variant="outline-success"
+                className="btn w-100 p-3"
+                onClick={() => handleClick()}
+              >
+                Create a new list
+              </Button>
+            </section>
+          </main>
+        </Col>
+      </Row>
+    </Container>
   );
 };
 
