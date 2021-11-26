@@ -69,7 +69,7 @@ const Home = () => {
             <Ratio aspectRatio={87}>
               <img
                 src={shoppingIllustration}
-                alt="illustration of a woman with a cart"
+                alt="a woman with a shopping cart"
                 fluid
                 className="mx-auto d-block"
               />
@@ -77,11 +77,11 @@ const Home = () => {
           </header>
         </Col>
 
-        <Col className="mx-auto d-block text-dark rounded">
+        <Col className="mx-auto d-block text-dark">
           <main>
-            <h1 className="text-center py-2 text-success">Smart Shopping</h1>
+            <h1 className="text-center text-success py-2">Smart Shopping</h1>
             <section>
-              <h2 className="text-center py-3 h3">
+              <h2 className="h3 text-center py-3">
                 Enter your three words token
               </h2>
               <Form onSubmit={handleSubmit}>
@@ -103,7 +103,7 @@ const Home = () => {
                     />
                   </InputGroup>
                   {noSharedToken && showErrorMessage && (
-                    <Error errorMessage="Token does not exist, enter a valid token" />
+                    <Error errorMessage="Token does not exist. Enter a valid token." />
                   )}
                 </Form.Group>
                 <Button
@@ -117,7 +117,7 @@ const Home = () => {
             </section>
 
             <section className="py-3">
-              <h2 className="py-2 h3">Don't have a list?</h2>
+              <h2 className="h3 py-2">Don't have a list?</h2>
               <Button
                 variant="outline-success"
                 className="btn w-100 p-3"
