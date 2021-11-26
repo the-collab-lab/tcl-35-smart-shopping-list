@@ -6,7 +6,8 @@
   box-sizing: border-box;
 }
 
-* {
+/* * { */
+/* * {
   margin: 0;
   font-family: 'Raleway', sans-serif;
 }
@@ -271,3 +272,50 @@ a {
   cursor: pointer;
   color: #fff;
 } */
+
+ul {
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  list-style-type: none;
+  font-size: 2rem;
+}
+
+li {
+  padding-right: 20px;
+}
+
+.active {
+  font-weight: bold;
+  text-decoration: none;
+}
+
+footer {
+  position: fixed;
+  width: 100%;
+  bottom: 0;
+  margin-bottom: 10px;
+}
+
+input {
+  font-size: 1.5rem;
+}
+
+.error-message {
+  color: red;
+  font-style: italic;
+  font-size: 0.8rem;
+}
+.error {
+  font-size: 1rem;
+  color: red;
+}
+
+input[type='radio'] {
+  margin-right: 5px;
+  margin-left: 15px;
+}
+
+.links a {
+  color: #198753;
+}
