@@ -1,5 +1,7 @@
 /* Reset CSS */
 
+@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@500&display=swap');
+
 *,
 *::before,
 *::after {
@@ -66,8 +68,71 @@ h1 {
   transform: translate(-50%, -50%);
 }
 
-.error {
-  padding-left: 0.5em;
+/* List Page Style*/
+
+.list-container {
+  background-color: #eee;
+}
+
+.input-group {
+  width: auto;
+}
+
+input[type='search'],
+select {
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+.filter-list {
+  padding: 12px 20px;
+  margin: 8px 0;
+}
+
+.item-name {
+  padding-left: 0.5rem !important;
+  margin-bottom: 0;
+  padding-top: 6px;
+}
+
+.check {
+  margin-top: 10px;
+}
+
+.card-listing {
+  background-color: #ffffff !important;
+  border-radius: 10px !important;
+  box-shadow: 2px 4px 6px 0 rgba(0, 0, 0, 0.2);
+  transition: all 0.2s ease;
+}
+
+.card-listing:hover {
+  box-shadow: 0px 12px 30px 0px rgba(0, 0, 0, 0.2);
+  transition: all 800ms cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+.green-bg,
+.yellow-bg,
+.purple-bg,
+.red-bg {
+  color: #191a19;
+}
+
+.green-bg {
+  background-color: #6ecb63;
+}
+
+.yellow-bg {
+  background-color: #f1c550;
+}
+
+.purple-bg {
+  background-color: #b97a95;
+}
+
+.red-bg {
+  background-color: #fe5f55;
 }
 
 /* AddItem.js */
