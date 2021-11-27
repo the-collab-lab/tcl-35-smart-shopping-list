@@ -12,6 +12,7 @@ import {
 } from '@firebase/firestore';
 import Footer from './Footer';
 import { validateInput } from './Validation';
+import { Button, Container, Card, ButtonGroup } from 'react-bootstrap';
 
 const AddItem = () => {
   const [items, setItems] = useState([]);
@@ -97,61 +98,77 @@ const AddItem = () => {
   };
 
   return (
-    <div id="main-container" className="add-items">
-      <h1>What To Buy</h1>
-      <form id="sub-wrapper" onSubmit={handleClick}>
-        <div className="form-item">
-          {hasError && <p className="error"> {errors} </p>}
+    <Container>
+      <Card border="white">
+        <div
+          id="main-container"
+          className="add-items bg-success text-white mx-auto mt-5 rounded-3"
+        >
+          <div className="mx-auto">
+            <Card.Body>
+              <h1 className="text-center">What To Buy</h1>
+              <form id="sub-wrapper" onSubmit={handleClick}>
+                <div className="form-item mx-auto text-center mt-3">
+                  {hasError && <p className="error"> {errors} </p>}
 
-          <label htmlFor="itemName">I want to buy: </label>
-          <input
-            type="text"
-            placeholder="Bread"
-            id="itemName"
-            value={itemName}
-            onChange={(e) => {
-              setItemName(e.target.value);
-            }}
-          />
+                  <h2 className="text-center mt-3">I want to buy:</h2>
+                  <input
+                    type="text"
+                    placeholder="Bread"
+                    id="itemName"
+                    value={itemName}
+                    onChange={(e) => {
+                      setItemName(e.target.value);
+                    }}
+                    className="mx-auto d-block mt-3"
+                  />
+                </div>
+
+                <div className="form-item text-center mt-5">
+                  <fieldset>
+                    <legend>How soon?</legend>
+                    <input
+                      type="radio"
+                      name="timeToBuy"
+                      id="soon"
+                      value="soon"
+                      onChange={handleValueChange}
+                      checked
+                    />
+                    <label htmlFor="soon">Soon</label>
+                    <input
+                      type="radio"
+                      name="timeToBuy"
+                      id="kindOfSoon"
+                      value="Kind of soon"
+                      onChange={handleValueChange}
+                    />
+                    <label htmlFor="kindOfSoon">Kind of Soon</label>
+                    <input
+                      type="radio"
+                      name="timeToBuy"
+                      id="notSoon"
+                      value="Not soon"
+                      onChange={handleValueChange}
+                    />
+                    <label htmlFor="notSoon">Not Soon</label>
+                  </fieldset>
+                </div>
+
+                <Button
+                  type="submit"
+                  className="form-item mx-auto d-block mt-5"
+                  variant="light"
+                >
+                  Add Item
+                </Button>
+              </form>
+            </Card.Body>
+          </div>
         </div>
-
-        <div className="form-item">
-          <fieldset>
-            <legend>How soon?</legend>
-            <input
-              type="radio"
-              name="timeToBuy"
-              id="soon"
-              value="soon"
-              onChange={handleValueChange}
-              checked
-            />
-            <label htmlFor="soon">Soon</label>
-            <input
-              type="radio"
-              name="timeToBuy"
-              id="kindOfSoon"
-              value="Kind of soon"
-              onChange={handleValueChange}
-            />
-            <label htmlFor="kindOfSoon">Kind of Soon</label>
-            <input
-              type="radio"
-              name="timeToBuy"
-              id="notSoon"
-              value="Not soon"
-              onChange={handleValueChange}
-            />
-            <label htmlFor="notSoon">Not Soon</label>
-          </fieldset>
-        </div>
-
-        <button id="submit" className="form-item">
-          Add Item
-        </button>
-      </form>
+      </Card>
       <Footer />
-    </div>
+    </Container>
   );
 };
 
