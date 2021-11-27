@@ -98,25 +98,35 @@ select {
 
 .check {
   margin-top: 10px;
-}
-
-.card-listing {
-  background-color: #ffffff !important;
-  border-radius: 10px !important;
-  box-shadow: 2px 4px 6px 0 rgba(0, 0, 0, 0.2);
-  transition: all 0.2s ease;
-}
-
-.card-listing:hover {
-  box-shadow: 0px 12px 30px 0px rgba(0, 0, 0, 0.2);
-  transition: all 800ms cubic-bezier(0.19, 1, 0.22, 1);
+  margin-left: 10px;
 }
 
 .green-bg,
 .yellow-bg,
 .purple-bg,
 .red-bg {
-  color: #191a19;
+  color: #ffffff;
+  font-weight: bolder;
+  border-radius: 10px !important;
+  box-shadow: 2px 4px 6px 0 rgba(0, 0, 0, 0.2);
+  transition: all 0.2s ease;
+}
+
+.green-bg:hover {
+  box-shadow: 0px 12px 30px 0px #6ecb63;
+  transition: all 800ms cubic-bezier(0.19, 1, 0.22, 1);
+}
+.yellow-bg:hover {
+  box-shadow: 0px 12px 30px 0px #f1c550;
+  transition: all 800ms cubic-bezier(0.19, 1, 0.22, 1);
+}
+.purple-bg:hover {
+  box-shadow: 0px 12px 30px 0px #b97a95;
+  transition: all 800ms cubic-bezier(0.19, 1, 0.22, 1);
+}
+.red-bg:hover {
+  box-shadow: 0px 12px 30px 0px #fe5f55;
+  transition: all 800ms cubic-bezier(0.19, 1, 0.22, 1);
 }
 
 .green-bg {

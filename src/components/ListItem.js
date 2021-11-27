@@ -171,7 +171,7 @@ const ListItem = () => {
           {searchListHandler({ value: searchlist, items }).length > 0 &&
             searchListHandler({ value: searchlist, items }).map((item) => {
               return (
-                <div className="mx-auto w-75 py-4 my-3 card-listing">
+                <div className="mx-auto w-75 py-4 my-3 ">
                   <div
                     key={item.itemName}
                     className={`${addBgColor(
