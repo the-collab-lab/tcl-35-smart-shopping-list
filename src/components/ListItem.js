@@ -7,6 +7,15 @@ import { useHistory } from 'react-router-dom';
 import { searchListHandler } from './customFilter.js';
 import { SortItems } from './Sort.js';
 import { addAriaLabelHelper, addBgColourHelper } from './Colours.js';
+import {
+  Navbar,
+  Container,
+  Button,
+  Row,
+  Spinner,
+  Alert,
+} from 'react-bootstrap';
+import 'bootstrap-icons/font/bootstrap-icons.css';
 
 const ListItem = () => {
   const [items, setItems] = useState([]);
@@ -20,6 +29,7 @@ const ListItem = () => {
   const itemsCollectionRef = collection(db, 'shopping-list');
   const history = useHistory();
   const DayInMilliSeconds = 60 * 60 * 24 * 1000;
+  const [show, setShow] = useState(true);
 
   if (currToken) {
     currentCollectionRef = doc(db, 'shopping-list', currToken);
@@ -78,7 +88,7 @@ const ListItem = () => {
 
   const handleDeleteList = (itemName) => {
     let confirm = window.confirm(
-      'Are you sure you want to delete this item from the list?',
+      `Are you sure you want to delete "${itemName}" from the list?`,
     );
     if (confirm) {
       const remainingItems = items.filter((item) => {
@@ -102,81 +112,127 @@ const ListItem = () => {
   SortItems({ items });
 
   return (
-    <div>
-      <div id="main-container" className="flex-wrapper">
-        <div id="sub-wrapper">
-          <h1>Shopping List</h1>
-          {loading && <p>Loading ... </p>}
+    <div className="list-container">
+      <Navbar bg="success" variant="dark" expand="lg" className="rounded">
+        <Container className="d-flex justify-content-center">
+          <h1 className="text-uppercase text-white py-4 mb-0 text-center">
+            Smart Shopping List
+          </h1>
+        </Container>
+      </Navbar>
+      <Container className="my-4 py-4 list-container">
+        <Row className="justify-content-md-center">
+          {loading && (
+            <Spinner
+              animation="border"
+              role="status"
+              variant="success"
+            ></Spinner>
+          )}
           {error && <p>An error occured</p>}
-          {emptyList && <p>You don't have any list yet</p>}
-
-          <div className="filter">
-            <label htmlFor="search">Filter items</label>
-            <br />
-            <input
-              type="search"
-              id="search"
-              placeholder="start typing here..."
-              name="searchlist"
-              className="search"
-              onChange={(e) => setSearchList(e.target.value)}
-            />
+          {emptyList && (
+            <div>
+              {show ? (
+                <Alert
+                  variant="danger"
+                  onClose={() => setShow(false)}
+                  dismissible
+                >
+                  <Alert.Heading className="text-center">
+                    Oh snap! You don't have any list yet!
+                  </Alert.Heading>
+                </Alert>
+              ) : (
+                ''
+              )}
+            </div>
+          )}
+          <div className="d-flex justify-content-center my-4 py-4">
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <span class="input-group-text" id="basic-addon1">
+                  <i class="bi bi-filter"></i>
+                </span>
+              </div>
+              <input
+                type="search"
+                id="search"
+                name="searchlist"
+                className="search"
+                onChange={(e) => setSearchList(e.target.value)}
+                class="form-control"
+                placeholder="Filter List"
+                aria-label="FIlter"
+                aria-describedby="basic-addon1"
+              />
+            </div>
           </div>
 
           {searchListHandler({ value: searchlist, items }).length > 0 &&
             searchListHandler({ value: searchlist, items }).map((item) => {
               return (
-                <div
-                  key={item.itemName}
-                  className={`${addBgColor(
-                    item.estimatedPurchaseInterval,
-                    item.lastPurchase,
-                    item.nextPurchase,
-                    item.totalPurchases,
-                  )} item-wrapper`}
-                >
-                  {
-                    <div className="right-list-pane">
-                      <div className="item-name-wrapper">
-                        <label htmlFor={item.itemName}>
-                          <span
-                            className="hide-span"
-                            aria-label={addAriaLabel(
-                              item.estimatedPurchaseInterval,
+                <div className="mx-auto w-75 py-4 my-3 card-listing">
+                  <div
+                    key={item.itemName}
+                    className={`${addBgColor(
+                      item.estimatedPurchaseInterval,
+                      item.lastPurchase,
+                      item.nextPurchase,
+                      item.totalPurchases,
+                    )} item-wrapper`}
+                  >
+                    {
+                      <div className="d-flex justify-content-between">
+                        <div className="d-flex">
+                          <input
+                            className="check"
+                            type="checkbox"
+                            id={item.itemName}
+                            disabled={handlePurchaseInLastDay(
                               item.lastPurchase,
-                              item.nextPurchase,
-                              item.totalPurchases,
-                              item.itemName,
                             )}
-                          >
-                            {item.itemName}
-                          </span>
-                        </label>
-                        <input
-                          type="checkbox"
-                          id={item.itemName}
-                          disabled={handlePurchaseInLastDay(item.lastPurchase)}
-                          checked={handlePurchaseInLastDay(item.lastPurchase)}
-                          onChange={() => handleOnChange(item.itemName)}
-                        />
-                        <p className="item-name">{item.itemName}</p>
+                            checked={handlePurchaseInLastDay(item.lastPurchase)}
+                            onChange={() => handleOnChange(item.itemName)}
+                          />
+                          <label htmlFor={item.itemName}>
+                            <span
+                              aria-label={addAriaLabel(
+                                item.estimatedPurchaseInterval,
+                                item.lastPurchase,
+                                item.nextPurchase,
+                                item.totalPurchases,
+                                item.itemName,
+                              )}
+                            >
+                              <p className="item-name text-capitalize">
+                                {item.itemName}
+                              </p>
+                            </span>
+                          </label>
+                        </div>
+                        <Button
+                          variant="danger"
+                          className="delete-list"
+                          onClick={() => handleDeleteList(item.itemName)}
+                        >
+                          <i className="bi bi-trash pe-2"></i>
+                          Delete
+                        </Button>
                       </div>
-                      <button
-                        className="delete-list"
-                        onClick={() => handleDeleteList(item.itemName)}
-                      >
-                        Delete
-                      </button>
-                    </div>
-                  }
+                    }
+                  </div>
                 </div>
               );
             })}
+        </Row>
+        <div className="d-flex justify-content-center">
+          {emptyList && (
+            <Button variant="success" onClick={addItemBtn}>
+              Add Item
+            </Button>
+          )}
         </div>
-      </div>
-      <section>
-        {emptyList && <button onClick={addItemBtn}>Add Item</button>}
-      </section>
+      </Container>
       <Footer />
     </div>
   );

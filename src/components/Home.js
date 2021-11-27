@@ -5,9 +5,7 @@ import { getToken } from '@the-collab-lab/shopping-list-utils';
 import { db } from '../lib/firebase.js';
 import { collection, getDocs } from '@firebase/firestore';
 import Error from './Error';
-
 import shoppingIllustration from '../assets/undraw_shopping_app_flsj.svg';
-
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
