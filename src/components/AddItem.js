@@ -12,7 +12,14 @@ import {
 } from '@firebase/firestore';
 import Footer from './Footer';
 import { validateInput } from './Validation';
-import { Button, Container, Card, ButtonGroup } from 'react-bootstrap';
+import {
+  Button,
+  Container,
+  Card,
+  Form,
+  FormControl,
+  InputGroup,
+} from 'react-bootstrap';
 
 const AddItem = () => {
   const [items, setItems] = useState([]);
@@ -59,7 +66,7 @@ const AddItem = () => {
         });
       } else {
         setHasError(true);
-        setTimeout(() => setHasError(false), 3000);
+        setTimeout(() => setHasError(false), 30000);
       }
     } else {
       if (validateInput({ newList, setErrors, errorsList, items })) {
@@ -99,73 +106,77 @@ const AddItem = () => {
 
   return (
     <Container>
-      <Card border="white">
-        <div
-          id="main-container"
-          className="add-items bg-success text-white mx-auto mt-5 rounded-3"
-        >
-          <div className="mx-auto">
-            <Card.Body>
-              <h1 className="text-center">What To Buy</h1>
-              <form id="sub-wrapper" onSubmit={handleClick}>
-                <div className="form-item mx-auto text-center mt-3">
-                  {hasError && <p className="error"> {errors} </p>}
+      <Card
+        style={{ width: '80%' }}
+        className="bg-success text-white mx-auto d-block mt-5 rounded-3"
+      >
+        <Card.Body>
+          <Card.Title>
+            <h1 className="text-center">What To Buy</h1>
+          </Card.Title>
+          <Form onSubmit={handleClick}>
+            <Form.Group className="text-center" controlId="itemName">
+              {hasError && <p className="alert-danger"> {errors} </p>}
 
-                  <h2 className="text-center mt-3">I want to buy:</h2>
-                  <input
-                    type="text"
-                    placeholder="Bread"
-                    id="itemName"
-                    value={itemName}
-                    onChange={(e) => {
-                      setItemName(e.target.value);
-                    }}
-                    className="mx-auto d-block mt-3"
-                  />
-                </div>
+              <Form.Label aria-label="Insert your item here">
+                <span hidden aria-label="hidden">
+                  I want to buy:
+                </span>
+              </Form.Label>
+              <InputGroup className="mx-auto w-50">
+                <Form.Control
+                  type="text"
+                  className="p-2"
+                  placeholder="Bread"
+                  id="itemName"
+                  value={itemName}
+                  onChange={(e) => {
+                    setItemName(e.target.value);
+                  }}
+                />
+              </InputGroup>
+            </Form.Group>
 
-                <div className="form-item text-center mt-5">
-                  <fieldset>
-                    <legend>How soon?</legend>
-                    <input
-                      type="radio"
-                      name="timeToBuy"
-                      id="soon"
-                      value="soon"
-                      onChange={handleValueChange}
-                      checked
-                    />
-                    <label htmlFor="soon">Soon</label>
-                    <input
-                      type="radio"
-                      name="timeToBuy"
-                      id="kindOfSoon"
-                      value="Kind of soon"
-                      onChange={handleValueChange}
-                    />
-                    <label htmlFor="kindOfSoon">Kind of Soon</label>
-                    <input
-                      type="radio"
-                      name="timeToBuy"
-                      id="notSoon"
-                      value="Not soon"
-                      onChange={handleValueChange}
-                    />
-                    <label htmlFor="notSoon">Not Soon</label>
-                  </fieldset>
-                </div>
+            <Form.Group className="text-center mt-4">
+              <fieldset>
+                <legend>How soon?</legend>
+                <input
+                  type="radio"
+                  name="timeToBuy"
+                  id="soon"
+                  value="soon"
+                  onChange={handleValueChange}
+                  checked
+                />
+                <label htmlFor="soon">Soon</label>
+                <input
+                  type="radio"
+                  name="timeToBuy"
+                  id="kindOfSoon"
+                  value="Kind of soon"
+                  onChange={handleValueChange}
+                />
+                <label htmlFor="kindOfSoon">Kind of Soon</label>
+                <input
+                  type="radio"
+                  name="timeToBuy"
+                  id="notSoon"
+                  value="Not soon"
+                  onChange={handleValueChange}
+                />
+                <label htmlFor="notSoon">Not Soon</label>
+              </fieldset>
+            </Form.Group>
 
-                <Button
-                  type="submit"
-                  className="form-item mx-auto d-block mt-5"
-                  variant="light"
-                >
-                  Add Item
-                </Button>
-              </form>
-            </Card.Body>
-          </div>
-        </div>
+            <Button
+              type="submit"
+              className="form-item mx-auto d-block mt-5"
+              variant="light"
+            >
+              Add Item
+            </Button>
+          </Form>
+        </Card.Body>
       </Card>
       <Footer />
     </Container>
