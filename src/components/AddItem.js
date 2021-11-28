@@ -147,6 +147,7 @@ const AddItem = () => {
                         value="soon"
                         autocomplete="off"
                         onChange={handleValueChange}
+                        defaultChecked
                       />
                       <label className="form-check-label" htmlFor="soon">
                         Soon
