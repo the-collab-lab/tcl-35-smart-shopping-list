@@ -60,7 +60,7 @@ const AddItem = () => {
         });
       } else {
         setHasError(true);
-        setTimeout(() => setHasError(false), 30000);
+        setTimeout(() => setHasError(false), 3000);
       }
     } else {
       if (validateInput({ newList, setErrors, errorsList, items })) {
