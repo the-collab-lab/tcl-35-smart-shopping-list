@@ -161,27 +161,29 @@ li {
 
 .active {
   font-weight: bold;
+}
+
+.nav-item > a {
   text-decoration: none;
+}
+
+.selected {
+  background-color: #23a166 !important;
 }
 
 input {
   font-size: 1.5rem;
 }
 
-/* input[type='radio'] {
-  margin-right: 5px;
-  margin-left: 15px;
-} */
-
 .links a {
   color: #198753;
 }
 
-/* Footer.js */
+.footer {
+  margin-top: 5px;
+}
 
-footer {
-  position: fixed;
-  width: 100%;
-  bottom: 0;
-  margin-bottom: 10px;
+.list-container {
+  height: 90vh !important;
+  overflow: auto !important;
 }
