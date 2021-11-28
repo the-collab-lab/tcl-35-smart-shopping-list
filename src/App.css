@@ -191,16 +191,12 @@ li {
   text-decoration: none;
 }
 
-.selected {
-  background-color: #23a166 !important;
-}
-
 input {
   font-size: 1.5rem;
 }
 
 .links a {
-  color: #198753;
+  color: #198754;
 }
 
 .footer {

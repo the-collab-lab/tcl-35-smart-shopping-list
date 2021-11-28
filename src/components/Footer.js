@@ -7,12 +7,15 @@ const Footer = () => {
       <nav className="links-wrapper App-Navbar-Bottom fixed-bottom">
         <ul className="links mt-5 nav nav-pills nav-fill">
           <li className="nav-item">
-            <NavLink to="/list" activeClassName="active nav-link p-2 selected">
+            <NavLink
+              to="/list"
+              activeClassName="active nav-link p-2 bg-success"
+            >
               List
             </NavLink>
           </li>
           <li className="nav-item">
-            <NavLink to="/add" activeClassName="active nav-link p-2 selected">
+            <NavLink to="/add" activeClassName="active nav-link p-2 bg-success">
               Add Item
             </NavLink>
           </li>
