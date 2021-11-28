@@ -4,6 +4,7 @@ import ListItem from '../src/components/ListItem';
 import Home from '../src/components/Home';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap-icons/font/bootstrap-icons.css';
 import './App.css';
 
 import {

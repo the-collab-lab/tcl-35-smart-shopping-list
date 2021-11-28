@@ -7,15 +7,8 @@ import { useHistory } from 'react-router-dom';
 import { searchListHandler } from './customFilter.js';
 import { SortItems } from './Sort.js';
 import { addAriaLabelHelper, addBgColourHelper } from './Colours.js';
-import {
-  Navbar,
-  Container,
-  Button,
-  Row,
-  Spinner,
-  Alert,
-} from 'react-bootstrap';
-import 'bootstrap-icons/font/bootstrap-icons.css';
+import NavBar from './NavBar';
+import { Container, Button, Row, Spinner, Alert } from 'react-bootstrap';
 
 const ListItem = () => {
   const [items, setItems] = useState([]);
@@ -112,14 +105,8 @@ const ListItem = () => {
   SortItems({ items });
 
   return (
-    <div className="list-container">
-      <Navbar bg="success" variant="dark" expand="lg" className="rounded">
-        <Container className="d-flex justify-content-center">
-          <h1 className="text-uppercase text-white py-4 mb-0 text-center">
-            Smart Shopping List
-          </h1>
-        </Container>
-      </Navbar>
+    <main className="list-container">
+      <NavBar title="Smart Shopping List" />
       <Container className="my-4 py-4 list-container">
         <Row className="justify-content-md-center">
           {loading && (
@@ -162,7 +149,7 @@ const ListItem = () => {
                 onChange={(e) => setSearchList(e.target.value)}
                 class="form-control"
                 placeholder="Filter List"
-                aria-label="FIlter"
+                aria-label="Search item"
                 aria-describedby="basic-addon1"
               />
             </div>
@@ -171,7 +158,7 @@ const ListItem = () => {
           {searchListHandler({ value: searchlist, items }).length > 0 &&
             searchListHandler({ value: searchlist, items }).map((item) => {
               return (
-                <div className="mx-auto w-75 py-4 my-3 ">
+                <div className="mx-auto w-75 my-3">
                   <div
                     key={item.itemName}
                     className={`${addBgColor(
@@ -182,7 +169,7 @@ const ListItem = () => {
                     )} item-wrapper`}
                   >
                     {
-                      <div className="d-flex justify-content-between">
+                      <div className="d-flex justify-content-between p-3">
                         <div className="d-flex">
                           <input
                             className="check"
@@ -234,7 +221,7 @@ const ListItem = () => {
         </div>
       </Container>
       <Footer />
-    </div>
+    </main>
   );
 };
 

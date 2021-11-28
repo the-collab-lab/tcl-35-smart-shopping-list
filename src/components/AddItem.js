@@ -10,16 +10,10 @@ import {
   setDoc,
   onSnapshot,
 } from '@firebase/firestore';
+import NavBar from './NavBar';
 import Footer from './Footer';
 import { validateInput } from './Validation';
-import {
-  Button,
-  Container,
-  Card,
-  Form,
-  FormControl,
-  InputGroup,
-} from 'react-bootstrap';
+import { Button, Container, Card, Form, InputGroup } from 'react-bootstrap';
 
 const AddItem = () => {
   const [items, setItems] = useState([]);
@@ -105,81 +99,106 @@ const AddItem = () => {
   };
 
   return (
-    <Container>
-      <Card
-        style={{ width: '80%' }}
-        className="bg-success text-white mx-auto d-block mt-5 rounded-3"
-      >
-        <Card.Body>
-          <Card.Title>
-            <h1 className="text-center">What To Buy</h1>
-          </Card.Title>
-          <Form onSubmit={handleClick}>
-            <Form.Group className="text-center" controlId="itemName">
-              {hasError && <p className="alert-danger"> {errors} </p>}
+    <>
+      <NavBar title="Smart Shopping Plan" />
+      <main>
+        <Container fluid>
+          <Card
+            style={{ width: '80%' }}
+            className="border-success text-dark mx-auto d-block mt-5 p-3"
+          >
+            <Card.Body>
+              <Card.Title>
+                <h1 className="text-success text-center">What To Buy</h1>
+              </Card.Title>
+              <Form onSubmit={handleClick}>
+                <Form.Group className="text-center" controlId="itemName">
+                  {hasError && <p className="alert-danger"> {errors} </p>}
 
-              <Form.Label aria-label="Insert your item here">
-                <span hidden aria-label="hidden">
-                  I want to buy:
-                </span>
-              </Form.Label>
-              <InputGroup className="mx-auto w-50">
-                <Form.Control
-                  type="text"
-                  className="p-2"
-                  placeholder="Bread"
-                  id="itemName"
-                  value={itemName}
-                  onChange={(e) => {
-                    setItemName(e.target.value);
-                  }}
-                />
-              </InputGroup>
-            </Form.Group>
+                  <Form.Label aria-label="Insert your item here">
+                    <span hidden aria-label="hidden">
+                      I want to buy:
+                    </span>
+                  </Form.Label>
+                  <InputGroup className="mx-auto w-50">
+                    <Form.Control
+                      type="text"
+                      className="p-2"
+                      placeholder="Bread"
+                      id="itemName"
+                      value={itemName}
+                      onChange={(e) => {
+                        setItemName(e.target.value);
+                      }}
+                    />
+                  </InputGroup>
+                </Form.Group>
 
-            <Form.Group className="text-center mt-4">
-              <fieldset>
-                <legend>How soon?</legend>
-                <input
-                  type="radio"
-                  name="timeToBuy"
-                  id="soon"
-                  value="soon"
-                  onChange={handleValueChange}
-                  checked
-                />
-                <label htmlFor="soon">Soon</label>
-                <input
-                  type="radio"
-                  name="timeToBuy"
-                  id="kindOfSoon"
-                  value="Kind of soon"
-                  onChange={handleValueChange}
-                />
-                <label htmlFor="kindOfSoon">Kind of Soon</label>
-                <input
-                  type="radio"
-                  name="timeToBuy"
-                  id="notSoon"
-                  value="Not soon"
-                  onChange={handleValueChange}
-                />
-                <label htmlFor="notSoon">Not Soon</label>
-              </fieldset>
-            </Form.Group>
+                <Form.Group className="text-center my-4">
+                  <fieldset>
+                    <legend>How soon?</legend>
 
-            <Button
-              type="submit"
-              className="form-item mx-auto d-block mt-5"
-              variant="light"
-            >
-              Add Item
-            </Button>
-          </Form>
-        </Card.Body>
-      </Card>
-      <Footer />
-    </Container>
+                    <div className="form-check form-check-inline">
+                      <input
+                        className="form-check-input"
+                        type="radio"
+                        name="timeToBuy"
+                        id="soon"
+                        value="soon"
+                        autocomplete="off"
+                        onChange={handleValueChange}
+                      />
+                      <label className="form-check-label" htmlFor="soon">
+                        Soon
+                      </label>
+                    </div>
+
+                    <div className="form-check form-check-inline">
+                      <input
+                        className="form-check-input"
+                        type="radio"
+                        name="timeToBuy"
+                        id="kindOfSoon"
+                        value="Kind of soon"
+                        autocomplete="off"
+                        onChange={handleValueChange}
+                      />
+                      <label className="form-check-label" htmlFor="kindOfSoon">
+                        Kind of Soon
+                      </label>
+                    </div>
+
+                    <div className="form-check form-check-inline">
+                      <input
+                        className="form-check-input"
+                        type="radio"
+                        name="timeToBuy"
+                        id="notSoon"
+                        value="Not soon"
+                        autocomplete="off"
+                        onChange={handleValueChange}
+                      />
+                      <label className="form-check-label" htmlFor="notSoon">
+                        Not Soon
+                      </label>
+                    </div>
+                  </fieldset>
+                </Form.Group>
+
+                <Button
+                  type="submit"
+                  variant="outline-success"
+                  className="mx-auto d-block btn w-50 p-2 mt-3"
+                >
+                  Add Item
+                </Button>
+              </Form>
+            </Card.Body>
+          </Card>
+          <Footer />
+        </Container>
+      </main>
+    </>
   );
 };
 
