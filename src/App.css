@@ -185,9 +185,29 @@ li {
 
 .active {
   font-weight: bold;
+}
+
+.nav-item > a {
   text-decoration: none;
+}
+
+.selected {
+  background-color: #23a166 !important;
+}
+
+input {
+  font-size: 1.5rem;
 }
 
 .links a {
   color: #198753;
+}
+
+.footer {
+  margin-top: 5px;
+}
+
+.list-container {
+  height: 90vh !important;
+  overflow: auto !important;
 }
