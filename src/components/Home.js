@@ -6,14 +6,15 @@ import { db } from '../lib/firebase.js';
 import { collection, getDocs } from '@firebase/firestore';
 import Error from './Error';
 import shoppingIllustration from '../assets/undraw_shopping_app_flsj.svg';
-import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
-import Button from 'react-bootstrap/Button';
-import Form from 'react-bootstrap/Form';
-import InputGroup from 'react-bootstrap/InputGroup';
-import FormControl from 'react-bootstrap/FormControl';
-import Ratio from 'react-bootstrap/Ratio';
+import {
+  Container,
+  Row,
+  Col,
+  Button,
+  Form,
+  FormControl,
+  Ratio,
+} from 'react-bootstrap';
 
 const Home = () => {
   const [joinlist, setJoinList] = useState('');
@@ -84,22 +85,20 @@ const Home = () => {
               </h2>
               <Form onSubmit={handleSubmit}>
                 <Form.Group controlId="token" className="clearfix">
-                  <Form.Label aria-label="enter three words token">
+                  <Form.Label aria-label="enter your three words token">
                     <span hidden aria-hidden="true">
                       User Token
                     </span>
                   </Form.Label>
-                  <InputGroup>
-                    <InputGroup.Text>three words token</InputGroup.Text>
-                    <FormControl
-                      className="p-3"
-                      id="token"
-                      type="text"
-                      name="joinlist"
-                      value={joinlist}
-                      onChange={handleChange}
-                    />
-                  </InputGroup>
+                  <FormControl
+                    className="p-3"
+                    id="token"
+                    type="text"
+                    placeholder="three words token"
+                    name="joinlist"
+                    value={joinlist}
+                    onChange={handleChange}
+                  />
                   {noSharedToken && showErrorMessage && (
                     <Error errorMessage="Token does not exist. Enter a valid token." />
                   )}
