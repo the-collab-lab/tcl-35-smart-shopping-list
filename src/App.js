@@ -13,6 +13,7 @@ import {
   Switch,
   Redirect,
 } from 'react-router-dom';
+import { ArchivalNoticeModal } from '@the-collab-lab/shopping-list-utils';
 
 function App() {
   const existingToken = localStorage.getItem('currToken');
@@ -22,7 +23,10 @@ function App() {
       <div className="app">
         <Switch>
           <Route exact path="/">
-            <Home />
+            <>
+              <Home />
+              <ArchivalNoticeModal />
+            </>
           </Route>
           <Route exact path="/add">
             <AddItem />
